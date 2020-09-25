@@ -1,0 +1,5 @@
+1. https://www.codechef.com/problems/IITI15 ( Sherlock and Inversions )
+2. https://www.hackerearth.com/problem/algorithm/substrings-count-3/
+3. https://codeforces.com/contest/617/problem/E  ( Xor and Favourite Number)
+4. https://www.hackerearth.com/challenges/college/Code-smash-2/algorithm/b205355022464943ba46fb69a1962152/
+	(Inversions. Mo's is not used here)

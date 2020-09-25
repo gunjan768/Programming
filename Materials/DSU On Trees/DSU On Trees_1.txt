@@ -1,0 +1,128 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,col[maxx];
+ll lim,tim=1,ans;
+vec v1[maxx];
+ll in[maxx],out[maxx],cnt[maxx];
+pairs store[maxx];
+ll euler[maxx],req[maxx];
+
+void dfsEuler(ll u,ll par)
+{
+    in[u]=tim;
+    euler[tim]=u;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        tim++;
+        dfsEuler(it,u);
+    }
+    
+    out[u]=tim;
+}
+void check(ll u,ll &mx)
+{
+    cnt[col[u]]++;
+    ll temp=cnt[col[u]];
+    
+    if(temp>mx)
+    {
+        mx=temp;
+        ans=col[u];
+    }
+    else if(temp>=mx)
+    ans+=col[u];
+}
+void dfs(ll u,ll par,bool keep)
+{
+    ll high,big,mx;
+    high=big=mx=-1;
+    ans=0;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        ll sz=out[it]-in[it]+1;
+        
+        if(sz>high)
+        high=sz,big=it;
+    }
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    dfs(it,u,0);
+
+    if(big!=-1)
+    {
+        dfs(big,u,1);
+        mx=store[big].f;
+        ans=store[big].s;
+    }
+    
+    check(u,mx);
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    {
+        rep(i,in[it],out[it]+1)
+        {
+            ll node=euler[i];
+            check(node,mx);
+        }
+    }
+    
+    if(!keep)
+    rep(i,in[u],out[u]+1)
+    {
+        ll node=euler[i];
+        cnt[col[node]]--;
+    }
+    else
+    {
+        store[u].f=mx;
+        store[u].s=ans;
+    }
+    
+    req[u]=ans;
+}
+int main()
+{
+    scn(n);
+    
+    rep(i,1,n+1)
+    scn(col[i]);
+    
+    rep(i,1,n)
+    {
+        ll u,v;
+        scns(u,v);
+        
+        v1[u].pb(v);
+        v1[v].pb(u);
+    }
+    
+    dfsEuler(1,1);
+    dfs(1,1,1);
+    
+    rep(i,1,n+1)
+    printf("%lld ",req[i]);
+} 

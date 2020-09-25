@@ -1,0 +1,75 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define maxx         500005
+#define inf          LONG_MAX
+#define zer          LONG_MIN
+ll mod=1e9+7,x,n,m,a[maxx];
+ll fact[3*maxx],inv[3*maxx];
+vec v1;
+
+ll power(ll a,ll b)
+{
+    ll res=1;
+ 
+    while(b)
+    {
+        if(b&1)
+        res=(res*a)%mod;
+ 
+        a=(a*a)%mod;
+        
+        b>>=1;
+    }
+ 
+    return res;
+}
+
+void factorial()
+{
+    fact[0]=fact[1]=1;
+    
+    rep(i,2,2*maxx)
+    fact[i]=(fact[i-1]*i)%mod;
+}
+
+void inverse()
+{
+    inv[2*maxx-1]=power(fact[2*maxx-1],mod-2);
+    
+    for(ll i=2*maxx-1;i>=0;i--)
+    inv[i-1]=(i*inv[i])%mod;
+}
+
+ll ncr(ll n,ll r)
+{
+    if(r>n)
+    return 0;
+    
+    ll val=fact[n];
+    
+    val=(val*inv[r])%mod;
+    val=(val*inv[n-r])%mod;
+    
+    return val;
+}
+
+void factors(ll n)
+{
+    for(ll i=1;i*i<=n;i++)
+    if(!(n%i))
+    v1.pb(i);
+}

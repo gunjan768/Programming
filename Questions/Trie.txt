@@ -1,0 +1,3 @@
+See the trie section on Hackerearth
+
+https://www.hackerrank.com/challenges/no-prefix-set/problem

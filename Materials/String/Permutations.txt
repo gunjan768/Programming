@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=1e3+5;
+int t;
+
+int n,vis[N];
+vector<string>v1;
+string s1;
+
+bool comp(string a,string b)
+{
+    if(a.size()==b.size())
+    return a<b;
+    
+    return a.size()<b.size();
+}
+
+void solve(string ans="")
+{
+    v1.pb(ans);
+
+    rep(i,0,n)
+    if(vis[i]==0)
+    vis[i]=1,solve(ans+s1[i]),vis[i]=0;
+}
+
+int main()
+{
+    t=1;
+
+    while(t--)
+    {
+        cin>>s1;
+
+        n=s1.size();
+
+        solve();
+
+        sort(all(v1),comp);
+
+        for(auto it:v1)
+        cout<<it<<endl;
+    }
+}

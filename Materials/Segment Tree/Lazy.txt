@@ -1,0 +1,174 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d",a)
+#define tc           int t; scn(t); while(t--)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         400005
+#define inf          INT_MAX
+#define zer          INT_MIN
+ll mod=1e9+7;
+int n,q,col[maxx],tim;
+int in[maxx],out[maxx],euler[maxx];
+ll lazy[4*maxx],tree[4*maxx];;
+vec v1[maxx];
+
+void dfs(int node,int par)
+{
+    in[node]=tim;
+    euler[tim]=node;
+    
+    for(auto it:v1[node])
+    if(it!=par)
+    {
+        tim++;
+        dfs(it,node);
+    }
+    
+    out[node]=tim;
+}
+
+ll query(int ss,int se,int qs,int qe,int node)
+{
+    if(lazy[node])
+    {
+        tree[node] = (1LL<<lazy[node]) ;
+        
+        if(ss!=se)
+        {
+            lazy[2*node+1]=lazy[node];
+            lazy[2*node+2]=lazy[node];
+        }
+        
+        lazy[node]=0;
+    }
+    
+    if(ss>qe || se<qs)
+    return 0;
+    
+    if(ss>=qs && se<=qe)
+    return tree[node];
+    
+    int mid = ss+(se-ss)/2;
+    
+    ll left=query(ss,mid,qs,qe,2*node+1);
+    ll right=query(mid+1,se,qs,qe,2*node+2);
+    
+    ll ans = left | right;
+    
+    return ans;
+}
+    
+void update(int ss,int se,int us,int ue,int clr,int node)
+{
+    if(lazy[node])
+    {
+        tree[node] = (1LL<<lazy[node]) ;
+        
+        if(ss!=se)
+        {
+            lazy[2*node+1]=lazy[node];
+            lazy[2*node+2]=lazy[node];
+        }
+        
+        lazy[node]=0;
+    }
+    
+    if(ss>ue || se<us)
+    return;
+    
+    if(ss>=us && se<=ue)
+    {
+        tree[node]=(1LL<<clr);
+
+        if(ss!=se)
+        {
+            lazy[2*node+1]=clr;
+            lazy[2*node+2]=clr;
+        }
+        
+        return;
+    }
+    
+    int mid = ss+(se-ss)/2;
+    
+    update(ss,mid,us,ue,clr,2*node+1);
+    update(mid+1,se,us,ue,clr,2*node+2);
+    
+    tree[node] = tree[2*node+1] | tree[2*node+2];
+}
+
+void build(int ss,int se,int node)
+{
+    if(ss==se)
+    {
+        int u=euler[ss]; 
+        tree[node] = (1LL<<col[u]);
+        
+        return ;
+    }
+    
+    int mid = ss+(se-ss)/2;
+    
+    build(ss,mid,2*node+1);
+    build(mid+1,se,2*node+2);
+    
+    tree[node]= tree[2*node+1] | tree[2*node+2];
+}
+
+int main()
+{
+    scns(n,q);
+    
+    rep(i,1,n+1)
+    scn(col[i]);
+    
+    rep(i,1,n)
+    {
+        int u,v;
+        scns(u,v);
+        
+        v1[u].pb(v);
+        v1[v].pb(u);
+    }
+    
+    dfs(1,1);
+    build(0,n-1,0);
+
+    while(q--)
+    {
+        int inp;
+        scn(inp);
+        
+        if(inp==1)
+        {
+            int vrtx,clr;
+            scns(vrtx,clr);
+           
+            update(0,n-1,in[vrtx],out[vrtx],clr,0);
+        }
+        
+        else
+        {
+            int vrtx;
+            scn(vrtx);
+            
+            ll ans=query(0,n-1,in[vrtx],out[vrtx],0);
+            
+            ans=__builtin_popcountll(ans);
+            
+            printf("%d\n",ans);
+        }
+    }
+}

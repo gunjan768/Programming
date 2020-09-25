@@ -1,0 +1,47 @@
+Node* LCA(Node *root,int n1,int n2)
+{
+    if(!root)
+    return nullptr;
+    
+    if(root->data == n1 || root->data == n2)
+    return root;
+    
+    Node *left=LCA(root->left,n1,n2);
+    Node *right=LCA(root->right,n1,n2);
+    
+    if(left && right)
+    return root;
+    
+    return left ? left : right;
+}
+
+void distance(Node *root,Node *lca,int a,int b,int &dis1,int &dis2,
+int &dis3,int lev)
+{
+    if(!root)
+    return;
+    
+    distance(root->left,lca,a,b,dis1,dis2,dis3,lev+1);
+    distance(root->right,lca,a,b,dis1,dis2,dis3,lev+1);
+    
+    if(root==lca)
+    dis1=lev;
+    
+    if(root->data == a)
+    dis2=lev;
+    
+    if(root->data == b)
+    dis3=lev;
+}
+
+/* Should return minimum distance between a and b
+   in a tree with given root*/
+int findDist(Node* root, int a, int b) 
+{
+    int dis1=0,dis2=0,dis3=0;
+    
+    Node *lca = LCA(root,a,b);
+    distance(root,lca,a,b,dis1,dis2,dis3,0);
+
+    return dis2+dis3-2*dis1;
+}

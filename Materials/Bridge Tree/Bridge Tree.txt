@@ -1,0 +1,170 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d",a)
+#define tc           int t; scn(t); while(t--)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         300005
+#define inf          INT_MAX
+#define zer          INT_MIN
+int n,m,u[maxx],v[maxx],wt[maxx];
+int tim=1,par[maxx],stock[maxx];
+bool vis[maxx],bridge[maxx];
+int src,des,res,low[maxx],dis[maxx];
+vec v1[maxx];
+vector<pairs>tree[maxx];
+ 
+int find(int ui)
+{
+    if(par[ui]<=-1)
+    return ui;
+    
+    return par[ui]=find(par[ui]);
+}
+ 
+void merge(int ui,int vi)
+{
+    ui=find(ui);
+    vi=find(vi);
+    
+    if(ui==vi)
+    return;
+    
+    if(par[ui]<par[vi])
+    {
+        par[ui]+=par[vi];
+        par[vi]=ui;
+    }
+    
+    else
+    {
+        par[vi]+=par[ui];
+        par[ui]=vi;
+    }
+}
+ 
+void dfs(int node,int pe)
+{
+    vis[node]=1;
+    low[node]=dis[node]=tim++;
+  
+    for(auto it:v1[node])
+    if(it!=pe)
+    {
+        int x=node^u[it]^v[it];
+        
+        if(!vis[x])
+        {
+            dfs(x,it);
+            
+            low[node]=min(low[node],low[x]);
+        }
+        else
+        low[node]=min(low[node],low[x]);
+    }
+    
+    if(pe!=-1)
+    {
+        if(low[node]==dis[node])
+        bridge[pe]=1;
+        
+        else
+        merge(u[pe],v[pe]);
+    }
+}
+ 
+void bridgeTree()
+{
+    rep(i,1,n+1)
+    if(!vis[i])
+    dfs(i,-1);
+ 
+    rep(i,0,m)
+    {   
+        if(bridge[i])
+        {
+            int ui=find(u[i]);
+            int vi=find(v[i]);
+      
+            tree[ui].pb({vi,wt[i]});
+            tree[vi].pb({ui,wt[i]});
+        }
+        
+        else
+        {
+            int prnt=find(u[i]);
+            
+            stock[prnt]|=wt[i];
+        }
+    }
+}
+ 
+void dfsTree(int node,int pr,int flip)
+{
+    flip|=stock[node];
+ 
+    if(node==des)
+    res=flip;
+    
+    for(auto it:tree[node])
+    if(it.f!=pr)
+    {
+        int now=flip|it.s;
+        dfsTree(it.f,node,now);
+    }
+}
+ 
+void oper()
+{
+    src=find(src);
+    des=find(des);
+ 
+    if(src==des)
+    {
+        res=stock[src];
+        
+        return;
+    }
+    
+    dfsTree(src,-1,0);
+}
+ 
+int main()
+{
+    scns(n,m);
+    
+    rep(i,0,maxx)
+    par[i]=-1;
+    
+    rep(i,0,m)
+    {
+        scns(u[i],v[i]);
+        scn(wt[i]);
+    
+        v1[u[i]].pb(i);
+        v1[v[i]].pb(i);
+    }
+    
+    bridgeTree();
+    
+    scns(src,des);
+ 
+    oper();
+    
+    if(res)
+    printf("YES\n");
+    
+    else
+    printf("NO\n");
+}

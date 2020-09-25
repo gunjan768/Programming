@@ -1,0 +1,140 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          INT_MIN
+ll mod=1e9+7,n,m,val[maxx];
+ll tim=1,level[maxx];
+vec v1[maxx];
+vector<pairs>query[maxx];
+ll in[maxx],out[maxx];
+ll euler[maxx],ans[maxx];
+ll cnt[maxx][26],total[maxx];
+ 
+void dfsEuler(ll u,ll par)
+{
+    in[u]=tim;
+    euler[tim]=u;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        tim++;
+        level[it]=level[u]+1;
+        
+        dfsEuler(it,u);
+    }
+    out[u]=tim;
+}
+void oper(ll u,ll num)
+{
+    ll minus=cnt[level[u]][val[u]]%2;
+    total[level[u]]-=minus;
+    
+    cnt[level[u]][val[u]]+=num;
+    
+    ll add=cnt[level[u]][val[u]]%2;
+    total[level[u]]+=add;
+}
+void dfs(ll u,ll par,bool keep)
+{
+    ll high,big;
+    high=big=-1;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        ll sz=out[it]-in[it]+1;
+        
+        if(sz>high)
+        high=sz,big=it;
+    }
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    dfs(it,u,0);
+    
+    if(big!=-1)
+    dfs(big,u,1);
+    
+    oper(u,1);
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    rep(i,in[it],out[it]+1)
+    {
+        ll node=euler[i];
+        oper(node,1);
+    }
+    
+    for(auto it:query[u])
+    {
+        ll depth=it.f;
+        ll ind=it.s;
+        
+        if(total[depth]<2)
+        ans[ind]=1;
+    }
+    
+    if(!keep)
+    rep(i,in[u],out[u]+1)
+    {
+        ll node=euler[i];
+        oper(node,-1);
+    }
+}
+int main()
+{
+    scns(n,m);
+ 
+    rep(i,1,n)
+    {
+        ll par;
+        scn(par);
+        
+        v1[par].pb(i+1);
+        v1[i+1].pb(par);
+    }
+    
+    string s1;
+    cin>>s1;
+    
+    rep(i,0,n)
+    val[i+1]=s1[i]-'a';
+    
+    rep(i,0,m)
+    {
+        ll ver,depth;
+        scns(ver,depth);
+        
+        query[ver].pb({depth,i});
+    }
+    
+    level[1]=1;
+    
+    dfsEuler(1,1);
+    dfs(1,1,1);
+    
+    rep(i,0,m)
+    {
+        if(ans[i])
+        printf("Yes\n");
+        else
+        printf("No\n");
+    }
+} 

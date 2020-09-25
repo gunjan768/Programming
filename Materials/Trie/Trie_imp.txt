@@ -1,0 +1,116 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d",a)
+#define tc           int t; scn(t); while(t--)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         100005
+#define inf          INT_MAX
+#define zer          INT_MIN
+int mod=1e9+7,n,k,a[maxx];
+ll ans,pref,xors;
+
+struct trie
+{
+    trie *ptr[2];
+    ll cnt=0;
+    
+    trie()
+    {
+        ptr[0]=nullptr;
+        ptr[1]=nullptr;
+    }
+};
+ 
+void insert(trie *root,ll val,int level)
+{
+    if(level==-1)
+    return;
+    
+    bool bit=(1LL*val>>level)&1;
+
+    if(!root->ptr[bit])
+    root->ptr[bit]=new trie();
+    
+    root->ptr[bit]->cnt++;
+
+    insert(root->ptr[bit],val,level-1);
+}
+ 
+void query(trie *root,ll val,int level)
+{
+    if(level==-1 or !root)
+    return;
+    
+    bool bit=(1LL*val>>level)&1;
+    bool kth=(1LL*k>>level)&1;
+    
+    if(kth)
+    {
+        if(bit)
+        {
+            if(root->ptr[bit])
+            xors+=root->ptr[bit]->cnt;
+            
+            query(root->ptr[!bit],val,level-1);
+        }
+        else
+        {
+            if(root->ptr[bit])
+            xors+=root->ptr[bit]->cnt;
+            
+            query(root->ptr[!bit],val,level-1);
+        }
+    }
+    else
+    {
+        if(bit)
+        query(root->ptr[bit],val,level-1);
+        
+        else
+        query(root->ptr[bit],val,level-1);
+    }
+}
+ 
+int main()
+{
+    tc
+    {
+        scns(n,k);
+    
+        rep(i,0,n)
+        scn(a[i]);
+        
+        trie *root=new trie();
+        
+        insert(root,pref,30); 
+        
+        rep(i,0,n)
+        {
+            pref^=a[i];
+           
+            query(root,pref,30);
+            insert(root,pref,30);
+            
+            ans+=xors;
+            xors=0;
+        }
+    
+        printf("%lld\n",ans);
+        
+        pref=0;
+        ans=0;
+        xors=0;
+    }
+}

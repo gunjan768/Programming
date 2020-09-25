@@ -1,0 +1,6 @@
+https://practice.geeksforgeeks.org/problems/count-ways-to-nth-stairorder-does-not-matter/0/
+https://practice.geeksforgeeks.org/problems/count-ways-to-reach-the-nth-stair/0
+https://practice.geeksforgeeks.org/problems/largest-square-formed-in-a-matrix/0
+https://practice.geeksforgeeks.org/problems/word-boggle/0
+https://practice.geeksforgeeks.org/problems/count-all-possible-paths-from-top-left-to-bottom-right/0/
+https://practice.geeksforgeeks.org/problems/shortest-common-supersequence/0/

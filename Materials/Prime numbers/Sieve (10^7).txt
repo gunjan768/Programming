@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          INT_MIN
+int mod=1e9+7,n;
+bool prime[10005];
+
+void sieve()
+{
+    rep(i,2,n+1)
+    prime[i]=1;
+
+    for(int i=2;i*i<=n;i++)
+    {
+        if(prime[i])
+        for(ll j=i*i;j<=n;j+=i)
+        prime[j]=0;
+    }
+}
+
+int main()
+{
+	
+} 

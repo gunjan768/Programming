@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ss short
+ss n,m;
+ss* acmTeam(ss **a)
+{
+    ss count,ans=-1,x=1;
+    ss *p=new ss[2];
+    for(ss i=0;i<n-1;i++)
+      for(ss j=0;j<n-i-1;j++)
+      {
+        count=0;
+        for(ss k=0;k<m;k++)
+        {
+            if(a[i][k]==1 || a[i+j+1][k]==1)
+              count++;
+        }
+        cout<<count<<" "<<x<<endl;
+        if(count>ans)
+        {
+          ans=count;
+          x=1;
+        }
+        else if(count==ans)
+        {
+            ans=count;
+            x++;
+        }
+      }
+    p[0]=ans;
+    p[1]=x;
+    return p;  
+}
+int main()
+{
+    cin>>n>>m;
+    ss **a=new ss*[n];
+    for(ss i=0;i<n;i++)
+      a[i]=new ss[m];
+    
+    for(ss i=0;i<n;i++)
+      for(ss j=0;j<m;j++)
+        cin>>a[i][j];
+    ss *p=new ss[2];
+    p=acmTeam(a);
+    for(ss i=0;i<2;i++)
+      cout<<p[i]<<"\n";
+}

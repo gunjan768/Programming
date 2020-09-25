@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=20+5;
+int t;
+
+int n,m,tot,vis[N][N];
+string dict[N],s1[N];
+
+bool solve(int x,int y,string word,int st)
+{
+    if(st==word.size())
+    return true;
+
+    if(x>=n || y>=m || x<0 || y<0)
+    return false;
+    
+    if(s1[x][y] != word[st])
+    return false;
+
+    if(vis[x][y]==1)
+    return false;
+
+    int res=0; vis[x][y]=1;
+    
+    res|=solve(x+1,y,word,st+1); 
+    res|=solve(x-1,y,word,st+1); 
+    res|=solve(x,y+1,word,st+1); 
+    res|=solve(x,y-1,word,st+1); 
+    res|=solve(x+1,y+1,word,st+1); 
+    res|=solve(x+1,y-1,word,st+1); 
+    res|=solve(x-1,y+1,word,st+1); 
+    res|=solve(x-1,y-1,word,st+1); 
+    
+    vis[x][y]=0;
+    
+    return res;
+}
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        scn(tot);
+        
+        rep(i,0,tot)
+        cin>>dict[i];
+        
+        scns(n,m);
+        
+        rep(i,0,n)
+        {
+            char ch; s1[i].clear();
+        
+            rep(j,0,m)
+            cin>>ch,s1[i].pb(ch);
+        }
+        
+        set<string>v1;
+        
+        rep(i,0,tot)
+        {
+            mem(vis,0);
+            
+            rep(j,0,n)
+            {
+                int flag=0;
+                
+                rep(k,0,m)
+                if(solve(j,k,dict[i],0))
+                {
+                    v1.insert(dict[i]);
+                    flag=1;
+                    
+                    break;
+                }
+                
+                if(flag==1)
+                break;
+            }
+        }
+        
+        if(v1.size()==0)
+        cout<<-1;
+        else
+        {
+            for(auto it:v1)
+            cout<<it<<" ";
+        }
+        
+        cout<<endl;
+    }
+}

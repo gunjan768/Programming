@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const ll mod=1e9+7;
+const ll N=2e5+5;
+int n,a[N];
+
+vec tree[4*N];
+
+vec merge(vec v1,vec v2)
+{
+    int sz1=v1.size(),i=0;
+    int sz2=v2.size(),j=0;
+
+    vec v3;
+
+    while(i<sz1 && j<sz2)
+    {
+        if(v1[i]<v2[j])
+        v3.pb(v1[i++]);
+        else
+        v3.pb(v2[j++]);
+    }
+
+    while(i<sz1)
+    v3.pb(v1[i++]);
+
+    while(j<sz2)
+    v3.pb(v2[j++]);
+
+    return v3;
+}
+
+int query(int st,int se,int qs,int qe,int val,int node)
+{
+    if(st>qe || se<qs)
+    return 0;
+
+    if(st>=qs && se<=qe)
+    {
+        auto it=lower_bound(all(tree[node]),val);
+        int smallItems=it-tree[node].begin();
+
+        return smallItems;
+    }
+
+    int mid=(st+se)/2;
+
+    int left=query(st,mid,qs,qe,val,2*node);
+    int right=query(mid+1,se,qs,qe,val,2*node+1);
+
+    int res=left+right;
+
+    return res;
+}
+
+void build(int st,int se,int node)
+{
+    if(st==se)
+    {
+        tree[node].pb(a[st]);
+
+        return;
+    }
+
+    int mid=(st+se)/2;
+
+    build(st,mid,2*node);
+    build(mid+1,se,2*node+1);
+
+    tree[node]=merge(tree[2*node],tree[2*node+1]);
+}
+
+int main()
+{
+    scn(n);
+
+    rep(i,0,n)
+    scn(a[i]);
+
+    build(0,n-1,1);
+
+    ll ans=0;
+
+    rep(i,1,n-1)
+    {
+        int largeItems=i-query(0,n-1,0,i-1,a[i],1);
+        int smallItems=query(0,n-1,i+1,n-1,a[i],1);
+
+        ans+=1LL*largeItems*smallItems;
+    }
+
+    printf("%lld\n",ans);
+}

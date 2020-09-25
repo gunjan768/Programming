@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          INT_MIN
+int mod=1e9+7,n;
+bool prime[10005];
+
+void sieve()
+{
+    rep(i,2,10005)
+    prime[i]=1;
+
+    for(int i=2;i*i<10005;i++)
+    {
+        if(prime[i])
+        for(ll j=i*i;j<10005;j+=i)
+        prime[j]=0;
+    }
+} 
+
+int min(int a,int b)
+{
+    if(a<b)
+    return a;
+
+    return b;
+}
+
+int manacher(string s1)
+{
+    n=s1.size();
+
+    int palind[n+1]={};
+    int r=0,c=0,maxLen=0;
+  
+    rep(i,0,n)
+    {
+        int mirror=2*c-i;
+
+        if(i<r)
+        palind[i]=min(r-i,palind[mirror]);
+
+        int a=i+(palind[i]+1);
+        int b=i-(palind[i]+1);
+
+        while(a<n && b>=0 && s1[a]==s1[b])
+        a++,b--,palind[i]++;
+
+        if(i+palind[i]>r)
+        {
+            c=i;
+            r=i+palind[i];
+
+            maxLen=max(palind[i],maxLen);
+        }
+    }
+
+    return maxLen;
+}
+
+int main()
+{
+    sieve();
+
+    tc
+    {
+        string s1,s2;
+        cin>>s2;
+
+        n=s2.size();
+        
+        rep(i,0,n)
+        {
+            s1.pb('#');
+            s1.pb(s2[i]);
+        }
+        
+        s1.pb('#');
+
+        int maxLen=manacher(s1);
+ 
+        if(prime[maxLen])
+        printf("PRIME\n");
+        else
+        printf("NOT PRIME\n");
+    }
+}

@@ -1,0 +1,140 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld\n",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          INT_MIN
+ll mod=1e9+7,n,a[maxx];
+unordered_map<ll,ll>freq,ans,vis;
+set<ll>s1;
+ll blocks;
+ 
+struct type
+{
+    ll l,r;
+    ll ind;
+};
+type query[maxx];
+ 
+bool comp(type a,type b)
+{
+    if(a.l/blocks!=b.l/blocks)
+    return a.l<b.l;
+    
+    return a.r<b.r;
+}
+
+bool check(ll x)
+{
+    if(freq[x]==x)
+    {
+        vis[x]=1;
+        s1.insert(x);
+        
+	return 1;
+    }
+
+    return 0;
+}
+
+void removes(ll x)
+{
+    s1.erase(x);
+    vis[x]=0;
+}
+
+void mos_algo()
+{
+    blocks=(ll)sqrt(n);
+    
+    sort(query,query+q,comp);
+    
+    ll cl,cr;
+    cl=cr=0;
+    
+    rep(i,0,q)
+    {
+        ll l=query[i].l;
+        ll r=query[i].r;
+        ll ind=query[i].ind;
+        
+        while(cl<l)
+	{
+            freq[a[cl]]--;
+            
+	    if(!check(a[cl]) && vis[a[cl]])
+            removes(a[cl]); 
+            
+            cl++;
+        }
+
+        while(cl>l)
+	{
+            freq[a[cl-1]]++;
+            
+	    if(!check(a[cl-1]) && vis[a[cl-1]])
+            removes(a[cl-1]); 
+            
+            cl--;
+        }
+
+        while(cr<=r)
+	{
+            freq[a[cr]]++;
+            
+	    if(!check(a[cr]) && vis[a[cr]])
+            removes(a[cr]); 
+            
+            cr++;
+        }
+
+        while(cr>r+1)
+	{
+            freq[a[cr-1]]--;
+            
+	    if(!check(a[cr-1]) && vis[a[cr-1]])
+            removes(a[cr-1]); 
+            
+            cr--;
+        }
+        
+	ans[ind]=s1.size();
+    }
+}
+int main()
+{
+    scns(n,q);
+    
+    rep(i,0,n)
+    scn(a[i]);
+    
+    rep(i,0,q)
+    {
+        ll l,r;
+        scns(l,r);
+        
+	query[i].l=l-1;
+        query[i].r=r-1;
+        query[i].ind=i;
+    }
+    
+    mos_algo();
+    
+    rep(i,0,q)
+    {
+        print(ans[i]);
+        nl;
+    }
+}

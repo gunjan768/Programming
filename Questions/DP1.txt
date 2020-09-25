@@ -1,0 +1,43 @@
+1. https://www.hackerearth.com/practice/algorithms/dynamic-programming/introduction-to-dynamic-programming-1/practice-problems/algorithm/analytically-stable-123d6381/
+2. https://www.hackerearth.com/practice/algorithms/dynamic-programming/2-dimensional/practice-problems/algorithm/sum-conversion-b97a174a/description/
+3. https://www.hackerearth.com/practice/algorithms/dynamic-programming/2-dimensional/practice-problems/algorithm/hp-and-splitting-into-two-parts-0abf415a/description/
+4. https://www.hackerearth.com/practice/algorithms/dynamic-programming/2-dimensional/practice-problems/algorithm/possible-sums-5/
+5. https://practice.geeksforgeeks.org/problems/longest-common-substring/0
+6. https://practice.geeksforgeeks.org/problems/longest-common-subsequence/0
+7. https://www.hackerearth.com/practice/algorithms/dynamic-programming/2-dimensional/practice-problems/algorithm/palindromic-sub-string-length/description/
+8. https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps/0/
+9. https://practice.geeksforgeeks.org/problems/maximum-sum-increasing-subsequence/0/
+10. https://practice.geeksforgeeks.org/problems/knapsack-with-duplicate-items/0/
+11. https://practice.geeksforgeeks.org/problems/number-of-coins/0/
+12. https://practice.geeksforgeeks.org/problems/get-minimum-squares/0/
+13. https://practice.geeksforgeeks.org/problems/minimum-points-to-reach-destination/0/
+14. https://practice.geeksforgeeks.org/problems/cutted-segments/0
+15. https://practice.geeksforgeeks.org/problems/word-break-part-2/0/
+
+Site for top 20 dp questions
+https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
+
+Longest Common Subsequence
+Longest Increasing Subsequence
+Edit Distance
+Minimum Partition
+Ways to Cover a Distance
+Longest Path In Matrix
+Subset Sum Problem
+Optimal Strategy for a Game
+0-1 Knapsack Problem
+Boolean Parenthesization Problem
+Shortest Common Supersequence
+Matrix Chain Multiplication
+Partition problem
+Rod Cutting
+Coin change problem
+Word Break Problem
+Maximal Product when Cutting Rope
+Dice Throw Problem
+Box Stacking
+Egg Dropping Puzzle
+
+
+1. https://codingcompetitions.withgoogle.com/kickstart/round/000000000019ffc7/00000000001d40bb#problem
+2. https://codeforces.com/contest/900/problem/E ( Acha wala hai )

@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,a[maxx];
+vec v1[maxx],vis;
+ 
+ll euler(ll n) 
+{ 
+    ll res=n;
+    for(ll i=2;i*i<=n;i++){ 
+        if(!(n%i)){ 
+            while(!(n%i)) 
+                n/=i; 
+            res-=res/i; 
+        } 
+    } 
+    if(n>1) 
+        res-=res/n; 
+    return res; 
+}

@@ -1,0 +1,159 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,a[maxx];
+ll lim,tim=1,leaf[maxx];
+vec v1[maxx];
+set<ll>s1;
+multiset<ll>ans;
+ll in[maxx],out[maxx];
+ll euler[maxx],req[maxx];
+
+bool isLeaf(ll node)
+{
+     return (v1[node].size()==1 && node!=1);
+}
+void dfsEuler(ll u,ll par)
+{
+    in[u]=tim;
+    euler[tim]=u;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        tim++;
+        dfsEuler(it,u);
+    }
+    
+    if(isLeaf(u))
+    s1.insert(u);
+    
+    out[u]=tim;
+}
+ll dfs(ll u,ll par,bool keep)
+{
+    ll high,big,mx;
+    
+    high=big=-1;
+    mx=(1LL<<31)-1;
+    
+    for(auto it:v1[u])
+    if(it!=par)
+    {
+        ll sz=out[it]-in[it]+1;
+        
+        if(sz>high)
+        high=sz,big=it;
+    }
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    dfs(it,u,0);
+    
+    if(big!=-1)
+    mx=dfs(big,u,1);
+    
+    if(isLeaf(u))
+    ans.insert(leaf[u]);
+    
+    for(auto it:v1[u])
+    if(it!=par && it!=big)
+    rep(i,in[it],out[it]+1)
+    {
+        ll node=euler[i];
+        
+        if(isLeaf(node))
+        {    
+            ans.insert(leaf[node]);
+            multiset<ll>::iterator it1,it2,it3;
+            
+            it2=ans.find(leaf[node]);
+            
+            if(it2!=ans.begin())
+            {    
+                it1=--it2;
+                ++it2;
+                
+                if(mx>*it2-*it1)
+                mx=*it2-*it1;
+            }
+            
+            if(it2!=ans.end())
+            {
+                if(++it2!=ans.end())
+                {
+                    it3=it2;
+                    --it2;
+                    
+                    if(mx>*it3-*it2)
+                    mx=*it3-*it2;
+                }
+                else
+                --it2;
+            }
+        }
+    }
+    
+    req[u]=mx;
+    
+    if(!keep)
+    rep(i,in[u],out[u]+1)
+    {
+        ll node=euler[i];
+        
+        if(isLeaf(node))
+        {
+            auto it=ans.find(leaf[node]);
+            
+            if(it!=ans.end())
+            ans.erase(it);
+        }
+    }
+    
+    return mx;
+}
+int main()
+{
+    scns(n,m);
+
+    rep(i,1,n)
+    {
+        ll par;
+        scn(par);
+        
+        v1[par].pb(i+1);
+        v1[i+1].pb(par);
+    }
+    
+    rep(i,1,m+1)
+    scn(a[i]);
+    
+    dfsEuler(1,1);
+    
+    ll i=1;
+    for(auto it:s1)
+    leaf[it]=a[i++];
+    
+    dfs(1,1,1);
+    
+    rep(i,1,n+1)
+    if(!isLeaf(i))
+    printf("%lld ",req[i]);
+} 

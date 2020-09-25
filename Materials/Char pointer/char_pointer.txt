@@ -1,0 +1,114 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=20+5;
+int t;
+
+int n;
+
+char* solve(char *str)
+{
+    n=strlen(str);
+    
+    // First initialize the char pointer and alloacate the space.
+    char *ans = new char; 
+    
+    // Different ways to access the character pointer
+
+    // ...................... 1)
+    // rep(i,0,n)
+    // *(ans+i)=*(str+i);
+
+    // ...................... 2)
+    // rep(i,0,n)
+    // *(ans+i)=str[i];
+
+    // ...................... 3)
+    // rep(i,0,n)
+    // ans[i]=*(str+i);
+
+    // ...................... 4)
+    rep(i,0,n)
+    ans[i]=str[i];
+
+    // rep(i,0,n)
+    // *ans=str[i],ans++;
+
+    // Printing directly the variable name will end up printing out the whole char pointer.
+    // cout<<ans<<endl;
+
+    // Print the 2nd position.
+    // cout<<*(ans+2)<<endl;
+
+    // Print the 4rth position.
+    // cout<<ans[4]<<endl;
+    
+    cout<<ans[0]<<endl; cout<<ans[2]<<endl;
+    cout<<ans<<endl; ans++;
+
+    cout<<"************************************************************\n";
+
+    // As we incremented the character pointer by one so now printing the varaible name
+    // will again print the whole char pointer but starting position has been changed i.e
+    // 0th positon has been changed. If say our char pointer 'ans' is "gunjan". After
+    // incrementing by one, 0th positon will change from 'g' to 'u'. Now print the string
+    // and you will see the output : unjan ( not gunjan ).
+    cout<<ans[0]<<endl; cout<<ans[2]<<endl;
+    cout<<ans<<endl; ans--;
+    cout<<ans<<"\n\n";
+
+    rep(i,0,6)
+    ans[n+i]='a'+i;
+
+    // return (ans+2);
+    // return "Hero";
+    return ans;
+}
+
+int main()
+{
+    scn(t);
+
+    ll sum=0;
+
+    while(t--)
+    {
+        char str[1000]; cin>>str;
+      
+        char *ans=solve(str);
+
+        cout<<"************************************************************\n";
+
+        // cout<<ans<<endl; 
+        
+        int cnt=0;
+        
+        for(char *ch=ans; *ch != '\0'; ch++)
+        {
+            // Don't write : cout<<ch; As this will print the whole character array with the 
+            // new starting postion ( as each time we are incrementing the char pointer so
+            // starting ( 0th ) positon will change ). 
+
+            // cout<<*ch; will print the 0th positon of the character array. It is similar
+            // to the ---> cout<<ch[0]; or cout<<*(ch+0);
+            cout<<*ch; 
+            
+            cnt++;
+        }
+
+        cout<<endl<<cnt<<endl;
+    }
+}
