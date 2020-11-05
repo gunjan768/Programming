@@ -1,3 +1,6 @@
+https://www.hackerearth.com/practice/data-structures/stacks/basics-of-stacks/practice-problems/algorithm/nearest-smaller-element-929558b4/description/?layout=old
+
+
 #include<bits/stdc++.h>
 using namespace std;
 #include <ext/pb_ds/tree_policy.hpp>
@@ -22,38 +25,7 @@ const int mod=1e9+7;
 const int N=5e5+5;
 int t;
 
-int n,a[N];
-map<int,int>mp;
-ll bit[N];
-
-void update(int ind,int val)
-{
-    while(ind<=n)
-    bit[ind]+=val,ind+=ind&(-ind);
-}
-
-ll query(int ind)
-{
-    ll sum=0;
-
-    while(ind>0)
-    sum+=bit[ind],ind-=ind&(-ind);
-
-    return sum;
-}
-
-void performMapping()
-{
-    int cnt=1;
-
-    set<int>s1;
-
-    rep(i,0,n)
-    s1.insert(a[i]);
-
-    for(auto it:s1)
-    mp[it]=cnt++;
-}
+int n;
 
 int main()
 {
@@ -63,16 +35,29 @@ int main()
     {
         scn(n);
 
+        int a[n];
+
         rep(i,0,n)
         scn(a[i]);
 
-        performMapping();
-
-        ll inversion=0;
-
-        for(int i=n-1;i>=0;i--)
-        inversion+=query(mp[a[i]]-1),update(mp[a[i]],1);
+        stack<int>s1;
+	    
+        int ans[n];
         
-        printf("%lld\n",inversion);
+        for(int i=0;i<n;i++)
+        {
+            while(!s1.empty() && a[s1.top()]>=a[i])
+            s1.pop();
+            
+            if(!s1.empty())
+            ans[i]=a[s1.top()];
+            else
+            ans[i]=-1;
+            
+            s1.push(i);
+        }
+        
+        rep(i,0,n)
+        cout<<ans[i]<<" \n"[i==n-1];
     }
 }

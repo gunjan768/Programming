@@ -4,3 +4,12 @@ https://practice.geeksforgeeks.org/problems/largest-square-formed-in-a-matrix/0
 https://practice.geeksforgeeks.org/problems/word-boggle/0
 https://practice.geeksforgeeks.org/problems/count-all-possible-paths-from-top-left-to-bottom-right/0/
 https://practice.geeksforgeeks.org/problems/shortest-common-supersequence/0/
+https://practice.geeksforgeeks.org/problems/rod-cutting/0
+
+
+https://practice.geeksforgeeks.org/problems/minimum-number-of-deletions-and-insertions0209/1
+https://practice.geeksforgeeks.org/problems/longest-common-substring/0
+https://practice.geeksforgeeks.org/problems/shortest-common-supersequence/0
+https://practice.geeksforgeeks.org/problems/longest-palindromic-subsequence/0#
+https://practice.geeksforgeeks.org/problems/form-a-palindrome/0
+https://practice.geeksforgeeks.org/problems/longest-repeating-subsequence/0

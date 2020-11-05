@@ -41,3 +41,5 @@ Egg Dropping Puzzle
 
 1. https://codingcompetitions.withgoogle.com/kickstart/round/000000000019ffc7/00000000001d40bb#problem
 2. https://codeforces.com/contest/900/problem/E ( Acha wala hai )
+3. https://www.hackerearth.com/practice/algorithms/dynamic-programming/state-space-reduction/practice-problems/algorithm/unhappy-neighbours-72597b1f/description/?layout=old 
+	( Permutation and Combination ) 

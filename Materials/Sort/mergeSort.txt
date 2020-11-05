@@ -23,36 +23,47 @@ const int N=5e5+5;
 int t;
 
 int n,a[N];
-map<int,int>mp;
-ll bit[N];
 
-void update(int ind,int val)
+void merge(int low,int mid,int high)
 {
-    while(ind<=n)
-    bit[ind]+=val,ind+=ind&(-ind);
+    int sz1=mid-low+1,sz2=high-mid;
+
+    int temp1[sz1],temp2[sz2];
+
+    for(int i=0;i<sz1;i++)
+    temp1[i]=a[low+i];
+
+    for(int i=0;i<sz2;i++)
+    temp2[i]=a[mid+1+i];
+
+    int i=0,j=0,k=low;
+
+    while(i<sz1 && j<sz2)
+    {
+        if(temp1[i]<temp2[j])
+        a[k++]=temp1[i++];
+        else
+        a[k++]=temp2[j++];
+    }
+
+    while(i<sz1)
+    a[k++]=temp1[i++];
+
+    while(j<sz2)
+    a[k++]=temp2[j++];
 }
 
-ll query(int ind)
+void mergeSort(int low,int high)
 {
-    ll sum=0;
+    if(low>=high)
+    return;
+    
+    int mid=(low+high)/2;
 
-    while(ind>0)
-    sum+=bit[ind],ind-=ind&(-ind);
+    mergeSort(low,mid);
+    mergeSort(mid+1,high);
 
-    return sum;
-}
-
-void performMapping()
-{
-    int cnt=1;
-
-    set<int>s1;
-
-    rep(i,0,n)
-    s1.insert(a[i]);
-
-    for(auto it:s1)
-    mp[it]=cnt++;
+    merge(low,mid,high);
 }
 
 int main()
@@ -62,17 +73,15 @@ int main()
     while(t--)
     {
         scn(n);
-
-        rep(i,0,n)
+        
+        for(int i=0;i<n;i++)
         scn(a[i]);
 
-        performMapping();
+        mergeSort(0,n-1);
 
-        ll inversion=0;
+        for(int i=0;i<n;i++)
+        printf("%d ",a[i]);
 
-        for(int i=n-1;i>=0;i--)
-        inversion+=query(mp[a[i]]-1),update(mp[a[i]],1);
-        
-        printf("%lld\n",inversion);
+        printf("\n");
     }
 }

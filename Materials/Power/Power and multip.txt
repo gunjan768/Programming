@@ -1,33 +1,39 @@
 #include<bits/stdc++.h>
 using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define ll           long long
-#define rep(i,j,n)   for(ll i=j;i<n;i++)
-#define scn(a)       scanf("%lld",&a)
-#define scns(a,b)    scanf("%lld %lld",&a,&b)
-#define print(a)     printf("%lld\n",a)
-#define tc           ll t; scn(t); while(t--)
-#define vec          vector<ll>
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
 #define pb           push_back    
-#define pairs        pair<ll,ll>
+#define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define maxx         500005
 #define inf          INT_MAX
-#define zer          INT_MIN
-ll mod=1e9+7,n,a[maxx];
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
 
-ll power(ll a,ll b)
+int n;
+
+int power(int a,int b)
 {
-    ll res=1;
+    int res=1;
  
     while(b)
     {
         if(b&1)
-        res=(res*a)%mod;
+        res=(1LL*res*a)%mod;
  
-        a=(a*a)%mod;
+        a=(1LL*a*a)%mod;
         
         b>>=1;
     }
@@ -35,16 +41,16 @@ ll power(ll a,ll b)
     return res;
 }
 
-ll power(ll a,ll b)
+int power(int a,int b)
 {
-    ll res=1;
+    int res=1;
  
     while(b)
     {
         if(b&1)
-        res=(res+a)%mod;
+        res=(1LL*res+a)%mod;
  
-        a=(2*a)%mod;
+        a=(2LL*a)%mod;
         
         b>>=1;
     }

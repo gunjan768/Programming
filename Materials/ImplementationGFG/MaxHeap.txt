@@ -1,0 +1,134 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int const N = 2e5+5;
+
+class MaxHeap
+{
+    private:
+        int *a,n;
+
+    public:
+        MaxHeap(int n)
+        {
+            a = new int[N];
+
+            this->n = n;
+        }
+
+        void add(int,int);
+        void insert(int);
+        void build();
+        void heapifyFromTop(int);
+        void heapifyFromBottom(int);
+        void display();
+        void free();
+        void removeTop();
+        int top();
+};
+
+void MaxHeap::add(int val,int ind)
+{
+    a[ind]=val;
+}
+
+void MaxHeap::insert(int val)
+{
+    n++; a[n-1]=val;
+
+    heapifyFromBottom(n-1);
+}
+
+void MaxHeap::removeTop()
+{
+    swap(a[0],a[n-1]); n--;
+
+    heapifyFromTop(0);
+}
+
+int MaxHeap::top()
+{
+    if(n==0)
+    return -1;
+
+    return a[0];
+}
+
+void MaxHeap::heapifyFromBottom(int i)
+{
+    int par = (i-1)/2;
+
+    if(par>=0 && a[i]>a[par])
+    swap(a[i],a[par]),heapifyFromBottom(par);
+}
+
+void MaxHeap::heapifyFromTop(int i)
+{
+    int large=i,left=2*i+1,right=2*i+2;
+
+    if(left<n && a[left]>a[large])
+    large=left;
+
+    if(right<n && a[right]>a[large])
+    large=right;
+
+    if(large != i)
+    swap(a[i],a[large]),heapifyFromTop(large);
+}
+
+void MaxHeap::build()
+{
+    for(int i=n/2-1;i>=0;i--)
+    heapifyFromTop(i);
+}
+
+void MaxHeap::display()
+{
+    for(int i=0;i<n;i++)
+    printf("%d ",a[i]);
+
+    printf("\n");
+}
+
+void MaxHeap::free()
+{
+    delete(a);
+}
+
+int main()
+{
+    int n,q; scanf("%d %d",&n,&q);
+   
+    MaxHeap *obj = new MaxHeap(n);
+     
+    for(int i=0;i<n;i++)
+    {
+        int val; scanf("%d",&val);
+
+        obj->add(val,i);
+    }
+    
+    obj->build(); obj->display();
+   
+    while(q--)
+    {
+        int type; scanf("%d",&type);
+
+        if(type == 1)
+        {
+            int val; scanf("%d",&val);
+
+            obj->insert(val);
+        }
+        else if(type == 2)
+        obj->removeTop();
+        else
+        obj->display();
+    }
+
+    printf("%d\n",obj->top());
+
+    obj->free();
+
+    delete(obj);
+}

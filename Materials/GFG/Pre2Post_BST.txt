@@ -1,0 +1,57 @@
+// Preorder to postorder of the BST 
+
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=1e3+5;
+int t,n;
+
+void dfs(int mn,int mx,int *pre,vector<int> &post,int &ind)
+{
+    if(ind==n)
+    return;
+    
+    if(pre[ind]<mn || pre[ind]>mx)
+    return;
+    
+    int val=pre[ind++];
+    
+    dfs(mn,val,pre,post,ind);
+    dfs(val,mx,pre,post,ind);
+    
+    post.push_back(val);
+}
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        scn(n);
+        
+        int ind=0,pre[N];
+        vector<int> post;
+        
+        rep(i,0,n)
+        scn(pre[i]);
+        
+        dfs((int)-1e8,(int)1e8,pre,post,ind);
+        
+        for(auto it:post)
+        cout<<it<<" \n"[it==*post.rbegin()];
+    }
+}

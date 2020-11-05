@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t,n;
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        scn(n);
+        
+        string s1,s2; cin>>s2;
+        
+        s1.pb('#'); n=s2.size();
+        
+        rep(i,0,n)
+        s1.pb(s2[i]),s1.pb('#');
+        
+        n=s1.size(); int cnt=0;
+       
+        for(int i=0;i<n;i++)
+        {
+            if(s1[i]!='#')
+            cnt++;
+            
+            int l=i-1,r=i+1;
+          
+            while(l>=0 && r<n && s1[l]==s1[r])
+            {
+                if(s1[r]!='#')
+                cnt++;
+               
+                l--,r++;
+            }
+        }
+        
+        printf("%d\n",cnt);
+    }
+}

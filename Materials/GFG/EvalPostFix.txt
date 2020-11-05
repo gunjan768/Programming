@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
+
+int n;
+
+bool isOperator(char ch)
+{
+    return (ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^');
+}
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        string s1; cin>>s1;
+        
+        stack<int>num;
+        
+        n=s1.size();
+        
+        rep(i,0,n)
+        {
+            if(isOperator(s1[i]))
+            {
+                int b=num.top(); num.pop();
+                int a=num.top(); num.pop();
+                
+                int val;
+                
+                if(s1[i]=='/')
+                val=a/b;
+                else if(s1[i]=='*')
+                val=a*b;
+                else if(s1[i]=='+')
+                val=a+b;
+                else
+                val=a-b;
+                
+                num.push(val);
+            }
+            else
+            num.push(s1[i]-'0');
+        }
+        
+        print(num.top());
+    }
+}

@@ -1,0 +1,20 @@
+https://practice.geeksforgeeks.org/problems/maximum-sum-rectangle/0/?company[]=Amazon&difficulty[]=1&difficulty[]=2&page=1&query=company[]Amazondifficulty[]1difficulty[]2page1
+https://practice.geeksforgeeks.org/problems/max-rectangle/1
+https://practice.geeksforgeeks.org/problems/number-following-a-pattern/0  ( Stack )
+https://practice.geeksforgeeks.org/problems/leaves-to-dll/1  ( Leaves to DLL )
+https://practice.geeksforgeeks.org/problems/maximum-path-sum/1  ( Hard )
+https://practice.geeksforgeeks.org/problems/max-sum-in-the-configuration/1
+https://practice.geeksforgeeks.org/problems/find-k-th-smallest-element-in-bst/1/?company[]=Amazon&difficulty[]=1&difficulty[]=2&page=2&query=company[]Amazondifficulty[]1difficulty[]2page2
+https://practice.geeksforgeeks.org/problems/preorder-to-postorder/0
+https://practice.geeksforgeeks.org/problems/find-whether-path-exist/0  ( DFS Recursion )
+https://practice.geeksforgeeks.org/problems/minimum-cost-path/0/?company[]=Amazon&company[]=Microsoft&company[]=Adobe&company[]=Goldman%20Sachs&company[]=Google&company[]=Ola%20Cabs&company[]=Facebook&company[]=TCS&difficulty[]=2&sortBy=submissions&query=company[]Amazoncompany[]Microsoftcompany[]Adobecompany[]Goldman%20Sachscompany[]Googlecompany[]Ola%20Cabscompany[]Facebookcompany[]TCSdifficulty[]2sortBysubmissions#
+https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/submissions/
+https://leetcode.com/problems/next-permutation/
+https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1  ( must )
+https://practice.geeksforgeeks.org/problems/heap-sort/1
+
+
+				REMOVE ADJACENT VERSIONS
+
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/submissions/
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/submissions/

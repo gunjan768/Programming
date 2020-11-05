@@ -78,7 +78,6 @@ void dfs(int node,int pe)
     {
         if(low[node]==dis[node])
         bridge[pe]=1;
-        
         else
         merge(u[pe],v[pe]);
     }

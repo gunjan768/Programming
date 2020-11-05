@@ -1,0 +1,74 @@
+// Maximum xor b/w any two numbers in an array
+https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/submissions/
+
+struct Trie
+{
+    Trie *ptr[2];
+    
+    Trie()
+    {
+        ptr[0]=ptr[1]=nullptr;
+    }
+};
+
+int xors=0;
+
+void insert(Trie *root,int val,int lev)
+{
+    if(lev==-1)
+    return;
+    
+    bool bit = (1LL*val>>lev)&1;
+    
+    if(root->ptr[bit] == nullptr)
+    root->ptr[bit] = new Trie();
+    
+    insert(root->ptr[bit],val,lev-1);
+}
+
+void query(Trie *root,int val,int lev)
+{
+    if(lev==-1)
+    return;
+    
+    bool bit = (1LL*val>>lev)&1;
+    
+    if(bit)
+    {
+        if(root->ptr[0])
+        xors+=1<<lev,query(root->ptr[0],val,lev-1);
+        else
+        query(root->ptr[1],val,lev-1);
+    }
+    else
+    {
+        if(root->ptr[1])
+        xors+=1<<lev,query(root->ptr[1],val,lev-1);
+        else
+        query(root->ptr[0],val,lev-1);
+    }
+}
+
+class Solution {
+public:
+    int findMaximumXOR(vector<int>& a) 
+    {
+        Trie *root = new Trie();
+        
+        insert(root,a[0],31);
+        
+        int n=(int)a.size(),ans=0;
+        
+        for(int i=1;i<n;i++)
+        {
+            query(root,a[i],31);
+            
+            ans=max(ans,xors); xors=0;
+            
+            insert(root,a[i],31);
+        }
+        
+    
+        return ans;
+    }
+};

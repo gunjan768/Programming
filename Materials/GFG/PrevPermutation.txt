@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
+
+int n;      // eg : 56124 --> prev permi ---> 54126
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        string s1; cin>>s1;
+        
+        n=s1.size();
+        
+        int ind1=-1;
+        
+        for(int i=n-2;i>=0;i--)
+        if(s1[i]>s1[i+1])
+        {
+            ind1=i;
+            
+            break;
+        }
+        
+        if(ind1==-1)
+        {
+            print(-1);
+            
+            continue;
+        }
+        
+        int ind2=ind1+1;
+        
+        while(ind2<n && s1[ind2]<s1[ind1])
+        ind2++;
+        
+        ind2--;
+        
+        swap(s1[ind1],s1[ind2]);
+        
+        reverse(s1.begin()+ind1+1,s1.end());
+        
+        cout<<s1<<endl;
+    }
+}

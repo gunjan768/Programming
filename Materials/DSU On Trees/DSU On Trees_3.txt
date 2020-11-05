@@ -39,6 +39,7 @@ void dfsEuler(ll u,ll par)
         
         dfsEuler(it,u);
     }
+
     out[u]=tim;
 }
 void oper(ll u,ll num)

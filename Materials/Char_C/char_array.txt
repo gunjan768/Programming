@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t,n;
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        scn(n);
+        
+        char ch[n+1];
+        
+        // %s --> For string ( char array ), %c---> For single character. This is one of the way of
+        // taking the input. You can directly take an input using scanf("%s",ch); or scanf("%s",&ch);
+        // i.e apersand sign ( & ) is optional.
+
+        // Taking input one by one using %c as a char then length will be 1 more than the original
+        // one as to store the end of the char array. So it's more advisable to use %s format 
+        // specifier.
+
+        // Using %c --->
+        // rep(i,0,n+1)
+        // scanf("%c",&ch[i]),printf("%s\n",ch);
+        
+        // Using %s --->
+        scanf("%s",ch);
+        printf("%s\n",ch);
+
+        queue<char>q1;
+        
+        int freq[26]={}; cout<<strlen(ch)<<endl;
+    }
+}

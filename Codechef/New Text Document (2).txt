@@ -1,0 +1,664 @@
+https://www.codechef.com/problems/FLIPCOIN
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,q,a[maxx];
+vec v1[maxx],vis;
+ll tree[4*maxx],lazy[4*maxx];
+
+void update(ll ss,ll se,ll us,ll ue,ll node){
+    if(lazy[node]){
+        if(lazy[node])
+            tree[node]=se-ss+1-tree[node];
+        if(ss!=se){
+            lazy[2*node+1]=!lazy[2*node+1];
+            lazy[2*node+2]=!lazy[2*node+2];
+        }
+        lazy[node]=0;
+    }
+    if(ss>ue || se<us) return ;
+    if(ss>=us && se<=ue){
+        tree[node]=se-ss+1-tree[node];
+        if(ss!=se){
+            lazy[2*node+1]=!lazy[2*node+1];
+            lazy[2*node+2]=!lazy[2*node+2];
+        }
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    update(ss,mid,us,ue,2*node+1);
+    update(mid+1,se,us,ue,2*node+2);
+    
+    tree[node]=tree[2*node+1]+tree[2*node+2];
+}
+ll query(ll ss,ll se,ll qs,ll qe,ll node){
+    if(se<qs || ss>qe) return 0;
+    if(lazy[node]){
+        if(lazy[node])
+            tree[node]=se-ss+1-tree[node];
+        if(ss!=se){
+            lazy[2*node+1]=!lazy[2*node+1];
+            lazy[2*node+2]=!lazy[2*node+2];
+        }
+        lazy[node]=0;
+    }
+    if(ss>=qs && se<=qe) return tree[node];
+    ll mid=ss+(se-ss)/2;
+    return query(ss,mid,qs,qe,2*node+1)+query(mid+1,se,qs,qe,2*node+2);
+}
+im{
+    scns(n,q);
+    while(q--){
+        ll inp,l,r;
+        scn(inp); scns(l,r);
+        if(!inp)
+        update(0,n-1,l,r,0);
+        else{
+            ll ans=query(0,n-1,l,r,0);
+            print(ans);
+            nl;
+        }
+    }
+}
+
+https://www.codechef.com/problems/GRAPHCOL
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define inp          scn(n); rep(i,0,n) scn(a[i]) 
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         50005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,k;
+vec v1[maxx],v2[maxx],comp;
+vec vis,order;
+ll ncr[2000][2000];
+
+void ncr_table(){
+    rep(i,0,1000)
+        rep(j,0,i+1){
+            if(i==j || !j)
+                ncr[i][j]=1;
+            else
+                ncr[i][j]=(ncr[i-1][j-1]+ncr[i-1][j])%mod;
+        }
+}
+void topological_sort(ll u){
+    vis[u]=1;
+    for(auto it:v1[u])
+        if(!vis[it])
+            topological_sort(it);
+    order.pb(u);
+}
+void strongly_cc(ll u){
+    vis[u]=1;
+    comp.pb(u);
+    //cout<<comp[u]<<" ";
+    for(auto it:v2[u])
+        if(!vis[it])
+            strongly_cc(it);
+}
+void clearing(){
+    rep(i,0,maxx){
+        v1[i].clear();
+        v2[i].clear();
+    }
+    vis.assign(n+1,0);
+    comp.clear();
+    order.clear();
+}
+im{
+    ncr_table();
+    tc{
+        clearing();
+        scns(k,n); scn(m);
+        rep(i,0,m){
+            ll u,v; scns(u,v);
+            v1[u].pb(v); v2[v].pb(u);
+        }
+        vis.assign(n+1,0);
+        rep(i,1,n+1)
+            if(!vis[i])
+                topological_sort(i);
+    
+        vis.assign(n+1,0);
+    
+        ll count=0;
+        rep(i,0,n){
+            ll u=order[n-1-i];
+            if(!vis[u]){
+                strongly_cc(u);
+                count++;
+                comp.clear();
+            }
+        } 
+        if(count>k)
+            printf("-1");
+        else{
+            ll f=1;
+            rep(i,1,count+1)
+                f=(f*i)%mod;
+                //cout<<count<<" "<<k;
+            ll ans=(ncr[k][count]*f)%mod;
+            print(ans);
+        }
+        nl;
+    }
+}
+
+https://www.codechef.com/SEPT19A/problems/GDSUB
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define inp          scns(n,k); rep(i,0,n) scn(a[i]) 
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.begin(),v.end())
+#define srte(v)      sort(v.rbegin(),v.rend())
+#define mem(a)       memset(a,0,sizeof(a))
+#define im           int main()
+#define maxx         100005
+#define inf          LONG_MAX
+#define zer          LONG_MIN
+ll mod=1e9+7,n,k,a[maxx];
+ll sum[maxx],freq[maxx];
+im{
+    inp; 
+    //rep(i,0,n) cout<<a[i]<<" ";
+    set<ll>s1;
+    rep(i,0,n){
+        freq[a[i]]++;
+        s1.insert(a[i]);
+    }
+    ll m=s1.size(); //cout<<m;
+    //cout<<freq[2]<<freq[3];
+    ll ans=0;
+    sort(freq,freq+maxx,greater<ll>());
+    sum[0]=freq[m-1]%mod;
+    rep(i,1,m-1)
+        sum[i]=(sum[i-1]+freq[m-1-i])%mod;
+    //rep(i,0,m) cout<<sum[i]<<" ";
+    rep(i,0,m-1)
+    {
+        if(i+2<=k){
+            rep(j,0,m-1-i){
+                ans+=(sum[m-2-i-j]*freq[j])%mod;
+                ans=ans%mod;
+            }
+            rep(j,0,m-1-i)
+                sum[m-2-i-j]=(sum[m-2-i-j]*freq[j])%mod;
+            rep(j,1,m)
+                sum[j]=(sum[j]+sum[j-1])%mod;
+        }
+    }
+    ans+=(n+1)%mod;
+    print(ans%mod);
+    printf("\n");
+}
+
+https://www.codechef.com/problems/A2J001
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define inp          scn(n); rep(i,0,n) scn(a[i]) 
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.begin(),v.end())
+#define srte(v)      sort(v.rbegin(),v.rend())
+#define mem(a)       memset(a,0,sizeof(a))
+#define im           int main()
+#define maxx         1000005
+#define inf          LONG_MAX
+#define zer          LONG_MIN
+ll mod=1e9+7,n,k,a[maxx];
+ll prime[maxx]; 
+
+void sieve() 
+{ 
+    rep(i,2,maxx+1)
+	prime[i]=1;
+    rep(i,2,sqrt(maxx)+1) 
+    {
+	    if(prime[i])
+	        for(ll j=i*i;j<=maxx+1;j+=i) 
+			    prime[j]=0;
+    }
+}
+ll power(ll a,ll b)
+{
+    ll res=1;
+    while(b){
+        if(b%2) res=(res*a)%mod;
+        a=(a*a)%mod; b>>=1;;
+    }
+    return res;
+}
+im{
+    sieve();  //cout<<prime[4];
+    rep(i,1,maxx+1)
+        prime[i]+=prime[i-1];
+   
+    tc{
+        scns(n,k);
+        print(power(k%mod,prime[n]));
+        printf("\n");
+    }
+}
+
+https://www.codechef.com/problems/SFRV
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define tc           ll t; cin>>t; while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define st(a,n)      sort(a,a+n)
+#define srt(v)       sort(v.begin(),v.end())
+#define srte(v)      sort(v.rbegin(),v.rend())
+#define mem(a)       memset(a,0,sizeof(a));
+#define im           int main()
+#define maxx         100005
+ll mod=1e9+7,n,m,a[maxx];
+
+im{
+    tc{
+        cin>>n; //ll dp[n+1][n+1];
+        //rep(i,0,n+2) { dp[0][i]=0; dp[i][0]=0; }
+        rep(i,1,n+1) cin>>a[i];
+        //ll j=1,ans;
+        ll dp[n+1]={}; dp[1]=a[1];
+		
+		rep(i,2,n+1) dp[i]=max(dp[i-1]+a[i]*i,dp[i-2]+a[i-1]*i+a[i]*(i-1));
+		
+		cout<<dp[n]<<endl;
+    }
+}
+
+https://www.codechef.com/problems/MAXEXPR
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define tc           ll t; cin>>t; while(t--)
+#define inp	         cin>>n; rep(i,0,n) cin>>a[i];
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define st(a,n)      sort(a,a+n)
+#define srt(v)       sort(v.begin(),v.end())
+#define srte(v)      sort(v.rbegin(),v.rend())
+#define mem(a)       memset(a,0,sizeof(a));
+#define im           int main()
+#define maxx         100005
+#define inf	         LONG_MAX
+#define zer          LONG_MIN
+ll mod=1e9+7,n;
+double c[maxx],k[maxx];
+
+im{
+    tc{
+        cin>>n; double x[n];
+        double mul=0.0,sum=0.0,F=0.0;
+        rep(i,0,n) cin>>k[i];
+        rep(i,0,n) cin>>c[i];
+        rep(i,0,n) {
+            mul+=k[i]*c[i];
+            sum+=1.0/(k[i]*1.0);
+        }
+        if(mul<0) cout<<-1<<endl;
+        else{
+            rep(i,0,n) {
+                x[i]=(mul/(sum*k[i]*k[i]*1.0))-c[i];
+                F+=sqrt(x[i]+c[i]);
+            }
+            cout<<F<<" ";
+            rep(i,0,n) cout<<x[i]<<" ";
+            cout<<endl;
+        }
+    }
+}
+
+https://www.codechef.com/problems/BURARRAY
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+typedef pair<int, int> pii;
+
+#define F first
+#define S second
+
+map<ll, ll> par;
+
+ll getPar(ll v){
+	if (!par.count(v))
+		par[v] = v;
+	return par[v]==v? v: par[v]=getPar(par[v]);
+}
+
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int te;	cin >> te;
+	while (te--){
+		par.clear();
+		ll sm = 0;
+		ll n; int q; cin >> n >> q;
+		while (q--){
+			int type; cin >> type;
+			if (type == 1){
+				ll x; cin >> x; x += sm;
+				par[x] = x-1;
+			}
+			else{
+				ll l, r; cin >> l >> r; l += sm, r += sm;
+				ll p=getPar(r);
+				if(p<l) cout<<"0\n";
+				else {
+					cout<<p<<"\n";
+					sm=(sm+p)%n;
+				}
+			}
+		}
+	}
+}
+
+https://www.codechef.com/problems/SILLYPRS
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        long long int n,j=0,sum=0; cin>>n;
+        long long int a[n],b[n],c[n],d[n];
+        
+        for(int i=0;i<n;i++) cin>>a[i];
+        for(int i=0;i<n;i++) cin>>b[i];
+        
+        for(int i=0;i<n;i++) if(a[i]%2==0) c[j++]=a[i];
+        for(int i=0;i<n;i++) if(a[i]%2) c[j++]=a[i];
+          
+        j=0;
+        for(int i=0;i<n;i++) if(b[i]%2==0) d[j++]=b[i];
+        for(int i=0;i<n;i++) if(b[i]%2) d[j++]=b[i];
+        
+        for(int i=0;i<n;i++) sum+=(c[i]+d[i])/2;
+          
+        cout<<sum<<endl;
+    }
+}
+
+https://www.codechef.com/problems/SLUSH
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main(){
+    ll t,n,m; cin>>t;
+    while(t--){
+        cin>>n>>m; ll fv[m],d[n],f[n],b[n],ans[n],sum=0;
+        for(ll i=0;i<m;i++) cin>>fv[i];
+        for(ll i=0;i<n;i++){
+            cin>>d[i]>>f[i]>>b[i];
+        }
+        memset(ans,0,sizeof(ans));
+        for(ll i=0;i<n;i++){
+            if(fv[d[i]-1]){ sum+=f[i]; fv[d[i]-1]-- ; ans[i]=d[i]; }
+            else sum+=b[i];
+        }
+        cout<<sum<<endl; ll j=0;
+        for(ll i=0;i<n;i++){
+            if(!ans[i]){
+                while(!fv[j]) j++;
+                cout<<j+1<<" "; fv[j]--;
+            }
+            else cout<<ans[i]<<" ";
+        }  
+    cout<<endl;
+    }
+}
+
+https://www.codechef.com/problems/COMA19C
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long ll;
+ll n,t,a[1005];
+ll countQuadruples() 
+{ 
+  unordered_map<ll,ll>m1; 
+  for(ll i=0;i<n;i++) m1[a[i]]++; 
+  ll count=0;
+  for(ll i=0;i<n;i++) { 
+    for(ll j=0;j<n;j++) { 
+        if(i==j)  continue; 
+        m1[a[i]]--; m1[a[j]]--; 
+        ll first=2*a[i]-a[j], fourth=(a[j]*a[j])/a[i]; 
+        if( !( ( a[j]*a[j] )%a[i] ) ){ 
+        if(a[i]!=a[j]) count+=m1[first]*m1[fourth]; 
+        else count+=m1[first]*(m1[fourth]-1); 
+        } 
+        m1[a[i]]++; m1[a[j]]++; 
+    } 
+  } 
+  return count; 
+} 
+int main() {
+      cin>>t;
+      while(t--){
+          cin>>n;
+          for(ll i=0;i<n;i++) cin>>a[i];
+          cout<<countQuadruples()<<endl;
+      }
+}
+
+https://www.codechef.com/problems/GRIDTOUR
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+int main(){
+	int t; cin>>t;
+	while(t--){
+		ll n,m,k; cin>>n>>m>>k;
+		if(__gcd(n,k)==1 && __gcd(m,k)==1) cout<<n*m<<"\n";
+		else cout<<"-1\n";
+	}
+}
+
+https://www.codechef.com/problems/GCDDIV
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long
+ll primeFactors(ll n){  
+    ll maxim;
+    while(!(n%2)){
+        maxim=2; n/=2;
+    }
+    for(ll i=3;i<=sqrt(n);i+=2)  
+      while(!(n%i)){  
+        maxim=i; n/=i;  
+      }  
+    if(n>2) maxim=n;
+    return maxim;
+}  
+int main() {
+    short t; cin>>t;
+    while(t--){
+        ll n,k; cin>>n>>k; ll a[n],gcd=0;
+        for(ll i=0;i<n;i++){
+            cin>>a[i]; gcd=__gcd(gcd,a[i]);
+        }
+       if(gcd<=k) cout<<"YES"<<endl;
+       else (primeFactors(gcd)<=k)?cout<<"YES\n":cout<<"NO\n";
+    }
+}
+
+https://www.codechef.com/APRIL19B/problems/FENCE
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll int
+#define pairs pair<int,int>
+
+int main()
+{
+    short t,l;
+    ll n,m,r,c,i,sum=0;
+    ll k;
+    cin>>t;
+    for(short x=1;x<=t;x++)
+    {
+       cin>>n>>m>>k;
+       sum=0;
+      
+       pairs p;  
+       set<pairs >s;
+      
+       for(ll y=0;y<k;y++)
+       {
+          cin>>r>>c;
+          p.first=r;
+          p.second=c;
+          s.insert(p);
+       }
+       set<pairs >::iterator it=s.begin();
+       i=0;
+       for(;it!=s.end();it++)
+       {
+            l=0;
+            pairs p1=*it;
+            if(p1.first==1 || s.find(pairs(p1.first-1,p1.second))==s.end()) 
+                l++;
+            if(p1.second==m || s.find(pairs(p1.first,p1.second+1))==s.end())
+                l++;
+            if(p1.first==n || s.find(pairs(p1.first+1,p1.second))==s.end()) 
+                l++;
+            if(p1.second==1 || s.find(pairs(p1.first,p1.second-1))==s.end())
+                l++;
+            sum=sum+l;
+       }
+       cout<<sum<<endl;
+    }
+}
+
+https://www.codechef.com/LTIME69B/problems/AVG
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int t,n,k,sum,i;
+	int v;
+	double x;
+	cin>>t;
+	int a[n];
+	
+	for(int j=1;j<=t;j++)
+	{
+	cin>>n>>k>>v;
+	for(i=0;i<n;i++)
+	  cin>>a[i];
+	  sum=0;
+	  for(i=0;i<n;i++)
+	  	  sum=sum+a[i];
+	  x=(v*(k+n)*1.0-sum*1.0)/k*1.0;
+	if(int(x)>0 && int(x)==x)
+	   cout<<int(x)<<endl;
+	else
+	  cout<<"-1"<<endl;
+	}
+	
+	return 0;
+}
+
+https://www.codechef.com/problems/PUBG
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long
+
+int main(){
+	ll t; cin>>t;
+	while(t--){
+		ll p,d;	cin>>p>>d;
+		ll rem=p-d;
+		ll ans=(rem/4)+1;
+
+		if(rem%4==0 || rem%4==1) cout<<(ans*ans)<<endl;
+        if(rem%4==2 || rem%4==3) cout<<(ans*ans)+(ans)<<endl;
+	}
+}

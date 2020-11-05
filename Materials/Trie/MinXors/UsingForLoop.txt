@@ -1,0 +1,67 @@
+struct Trie
+{
+    Trie *ptr[2];
+    
+    Trie()
+    {
+        ptr[0]=ptr[1]=nullptr;
+    }
+};
+
+void insert(Trie *root,int val,int lev)
+{
+    for(int i=lev;i>=0;i--)
+    {
+        bool bit = (1LL*val>>i)&1;
+        
+        if(root->ptr[bit] == nullptr)
+        root->ptr[bit] = new Trie();
+        
+        root = root->ptr[bit];
+    }
+}
+
+int query(Trie *root,int val,int lev)
+{
+    int xors=0;
+    
+    for(int i=lev;i>=0;i--)
+    {
+        bool bit = (1LL*val>>i)&1;
+        
+        if(bit)
+        {
+            if(root->ptr[1])
+            root = root->ptr[1];
+            else
+            xors+=(1LL<<i),root = root->ptr[0];
+        }
+        else
+        {
+            if(root->ptr[0])
+            root = root->ptr[0];
+            else
+            xors+=(1LL<<i),root = root->ptr[1];
+        }
+    }
+    
+    return xors;
+}
+
+int Solution::findMinXor(vector<int> &a) 
+{
+    Trie *root = new Trie();
+        
+    insert(root,a[0],31);
+    
+    int n=(int)a.size(),ans=1LL<<30;
+    
+    for(int i=1;i<n;i++)
+    {
+        ans=min(ans,query(root,a[i],31));
+        
+        insert(root,a[i],31);
+    }
+    
+    return ans;
+}

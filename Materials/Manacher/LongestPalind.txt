@@ -45,14 +45,16 @@ int manacher(string s1)
         if(i<r)
         palind[i]=min(mirror,palind[mirror]);
 
-        int st=i+(palind[i]+1),end=i-(palind[i]+1);
+        int a=i+(palind[i]+1);
+        int b=i-(palind[i]+1);
 
-        while(st<n && end>=0 && s1[st]==s1[end])
-        st++,end--,palind[i]++;
+        while(a<n && b>=0 && s1[a]==s1[b])
+        a++,b--,palind[i]++;
 
         if(i+palind[i]>r)
         {
-            c=i,r=i+palind[i];
+            c=i;
+            r=i+palind[i];
 
             if(palind[i]>maxLen)
             maxLen=palind[i],ind=i;

@@ -1,0 +1,43 @@
+https://practice.geeksforgeeks.org/problems/reorder-list/1
+
+void reorderList(Node* head) 
+{
+    Node *curr=head; 
+    
+    int len=0;
+    
+    while(curr)
+    len++,curr=curr->next;
+    
+    curr=head;
+    
+    for(int i=1;i<(len-1)/2+1;i++)
+    curr=curr->next;
+    
+    Node *root=curr->next, *prev=nullptr, *next=nullptr; 
+    
+    curr->next=nullptr; curr=root;
+
+    while(curr != nullptr) 
+    next = curr->next,curr->next=prev,prev=curr,curr=next; 
+
+    root = prev; 
+    
+    Node *curr1=head,*curr2=root,*next1=nullptr,*next2=nullptr;
+    
+    for(int i=1;i<len;i++)
+    {
+        if(i%2==1)
+        {
+            next1=curr1->next;
+            curr1->next=curr2;
+            curr1=next1;
+        }
+        else
+        {
+            next2=curr2->next;
+            curr2->next=curr1;
+            curr2=next2;
+        }
+    }
+}

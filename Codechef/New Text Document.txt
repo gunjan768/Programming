@@ -1,0 +1,1492 @@
+https://www.codechef.com/problems/TVT
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           int
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d",a)
+#define tc           int t; scn(t); while(t--)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         500005
+#define inf          INT_MAX
+#define zer          INT_MIN
+ll mod=1e9+7;
+int n,k;
+
+int main()
+{
+    tc
+    {
+        scns(n,k);
+        
+        int a[n+5],b[n+5];
+        
+        rep(i,0,n)
+        scn(a[i]);
+        
+        rep(i,0,n)
+        scn(b[i]);
+
+        set<int>elem;
+        
+        int tony,thanos;
+        vec to,th;
+        
+        tony=thanos=0;
+        
+        rep(i,0,n)
+        {
+            if(elem.find(a[i])==elem.end())
+            {
+                if(elem.size()<k)
+                {
+                    tony++;
+                    
+                    elem.insert(a[i]);
+                    to.pb(a[i]);
+                }
+                else
+                {
+                    if(th.size())
+                    {
+                        int last = th[th.size()-1];
+                        
+                        th.pop_back();
+                        to.pb(a[i]);
+                        
+                        elem.erase(last);
+                        elem.insert(a[i]);
+                        
+                        tony++;
+                        thanos--;
+                    }
+                }
+            }
+            
+            if(elem.find(b[i])==elem.end())
+            {
+                if(elem.size()<k)
+                {
+                    thanos++;
+                    
+                    elem.insert(b[i]);
+                    th.pb(b[i]);
+                }
+                else
+                {
+                    if(to.size())
+                    {
+                        int last = to[to.size()-1];
+                        
+                        to.pop_back();
+                        th.pb(b[i]);
+                        
+                        elem.erase(last);
+                        elem.insert(b[i]);
+                        
+                        tony--;
+                        thanos++;
+                    }
+                }
+            }
+        }
+        
+        if(tony>thanos)
+        printf("TONY\n");
+        
+        else if(tony<thanos)
+        printf("THANOS\n");
+        
+        else
+        printf("RUN TONY\n");
+    }
+}
+
+https://www.codechef.com/problems/PRIMEDST
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           int
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define nl           printf("\n")
+#define maxx         50005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+long long mod=1e9+7,n,m;
+long long ans;
+vec v1[maxx+5],primes;
+bool mark[maxx+5],isPrime[maxx+5];
+ll tot,sub[maxx+5],parent[maxx+5];
+ll counts[maxx];
+
+void sieve()
+{
+    rep(i,0,maxx)
+    isPrime[i]=1;
+    
+    for(ll i=2;i*i<=maxx;i++)
+    {
+        if(isPrime[i])
+        for(ll j=i*2;j<=maxx;j+=i)
+        isPrime[j]=0;
+    }
+    
+    rep(i,2,maxx)
+    if(isPrime[i])
+    primes.pb(i);
+}
+void dfsOper(ll u,ll par,ll val,ll dis)
+{
+    counts[dis]+=val;
+    
+    for(auto it:v1[u])
+    if(it!=par && !mark[it])
+    dfsOper(it,u,val,dis+1);
+}
+void dfsCal(ll u,ll par,ll dis)
+{
+    for(auto it:primes)
+    if(it>=dis)
+    ans+=counts[it-dis];
+    
+    for(auto it:v1[u])
+    if(it!=par && !mark[it])
+    dfsCal(it,u,dis+1);
+}
+void dfs(ll u,ll par)
+{
+    sub[u]=1;
+    tot++;
+    
+    for(auto it:v1[u])
+    if(it!=par && !mark[it])
+    {
+        dfs(it,u);
+        sub[u]+=sub[it];
+    }
+}
+ll centroid(ll u,ll par)
+{
+    for(auto it:v1[u])
+    if(it!=par && !mark[it] && sub[it]>tot/2)
+    return centroid(it,u);
+    
+    return u;
+}
+void decompose(ll u,ll par)
+{
+    tot=0;
+    dfs(u,u);
+    
+    ll cen=centroid(u,u);
+
+    if(par==-1)
+    par=cen;
+    
+    parent[cen]=par;
+    mark[cen]=1;
+   
+    for(auto it:v1[cen])
+    if(it!=par && !mark[it])
+    dfsOper(it,cen,1,1);
+    
+    for(auto it:v1[cen])
+    if(it!=par && !mark[it])
+    {
+        dfsOper(it,cen,-1,1);
+        dfsCal(it,cen,1);
+    }
+    
+    for(auto it:v1[cen])
+    if(it!=par && !mark[it])
+    decompose(it,cen);
+}
+int main()
+{
+    scn(n);
+    
+    sieve();
+    
+    rep(i,1,n)
+    {
+        ll u,v;
+        scns(u,v);
+        
+        v1[u].pb(v);
+        v1[v].pb(u);
+    }
+    
+    counts[0]++;
+    
+    decompose(1,-1);
+    
+    long long den=n*(n-1)/2;
+    
+    double prob=ans/(double)den;
+    
+    printf("%0.12f",prob);
+}
+
+
+https://www.codechef.com/problems/SHKSTR
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,q;
+vec v1;
+
+struct trie{
+    ll low;
+    ll over;
+    trie *ptr[26];
+    
+    trie(){
+        low=inf;
+        over=0;
+        
+        rep(i,0,26)
+        ptr[i]=nullptr;
+    }
+};
+ 
+void insert(trie *root,string s1,ll index,ll level){
+    ll ind=s1[level]-'a';
+    
+    if(!root->ptr[ind])
+    root->ptr[ind]=new trie();
+    
+    ll temp=root->ptr[ind]->low;
+    temp=min(temp,index);
+    
+    root->ptr[ind]->low=temp;
+    
+    if((level+1)!=s1.size())
+    insert(root->ptr[ind],s1,index,level+1);
+    else
+    if(!root->ptr[ind]->over)
+    root->ptr[ind]->over=index;
+}
+void search(trie *root,string s1,ll index,ll level){
+    ll len=s1.size();
+    
+    while(level!=len){
+        ll ind=s1[level++]-'a';
+        
+        if(!root->ptr[ind])
+        break;
+        
+        if(root->ptr[ind]->low>index)
+        break;
+        
+        root=root->ptr[ind];
+        cout<<(char)(ind+97);
+    }
+    
+    while(1){
+        if(root->over && root->over<=index)
+        break;
+        rep(i,0,26){
+            if(root->ptr[i] && root->ptr[i]->low<=index){
+            cout<<(char)(i+97);
+            root=root->ptr[i];
+            break;
+            }
+        }
+    }
+}
+int main(){
+    trie *root=new trie();
+    
+    scn(n);
+    
+    rep(i,0,n){
+        string s1;
+        cin>>s1;
+        insert(root,s1,i+1,0);
+    }
+    
+    scn(q);
+    
+    rep(i,0,q){
+        string s1;
+        ll index;
+        
+        scn(index);
+        cin>>s1;
+
+        search(root,s1,index,0);
+
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/CHEFADD
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         5000005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n;
+ll a,b,c,a1,b1;
+vec v1;
+ll dp[35][35][35][2];
+
+void binary(ll x){
+    ll i=0;
+    while(x){
+        v1.pb(x%2);
+        x>>=1;
+    }
+}
+void find_base_case(){
+    if(v1[0]){
+        if(a1)
+        dp[a1-1][b1][0][0]=1;
+        if(b1)
+        dp[a1][b1-1][0][0]=1;
+    }
+    else{
+        dp[a1][b1][0][0]=1;
+        if(a1 && b1)
+        dp[a1-1][b1-1][0][1]=1;
+    }
+    // cout<<dp[a1][b1-1][0][0]<<endl;
+}
+void calculate(){
+    binary(c);
+    
+    a1= __builtin_popcount(a);
+    b1= __builtin_popcount(b);
+   
+    n=v1.size();
+    
+    find_base_case();
+    
+    rep(i,1,n)
+    {
+        rep(j,0,32)
+        {
+            rep(k,0,32)
+            {
+                rep(car,0,2)
+                {
+                    if(!car)
+                    {
+                        if(!v1[i])
+                        {
+                            dp[j][k][i][0]+=dp[j][k][i-1][0];
+                            if(j>0 && k>0)
+                            dp[j-1][k-1][i][1]+=dp[j][k][i-1][0];
+                        }
+                        else
+                        {
+                            if(j>0)
+                            dp[j-1][k][i][0]+=dp[j][k][i-1][0];
+                            if(k>0)
+                            dp[j][k-1][i][0]+=dp[j][k][i-1][0];
+                        }
+                    }
+                    else
+                    {
+                        if(!v1[i])
+                        {
+                            if(j>0)
+                            dp[j-1][k][i][1]+=dp[j][k][i-1][1];
+                            if(k>0)
+                            dp[j][k-1][i][1]+=dp[j][k][i-1][1];
+                        }
+                        else
+                        {
+                            dp[j][k][i][0]+=dp[j][k][i-1][1];
+                            if(j>0 && k>0)
+                            dp[j-1][k-1][i][1]+=dp[j][k][i-1][1];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // for(auto it:v1)
+    // cout<<it;
+}
+void clear(){
+    v1.clear();
+    mem(dp,0);
+}
+int main(){
+   tc{
+        scns(a,b);
+        scn(c);
+
+        calculate();
+        
+        print(dp[0][0][n-1][0]);
+        clear();
+        nl;
+   }
+}
+
+https://www.codechef.com/problems/IITI15
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         20005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,q,a[maxx];
+ll freq[maxx],ans[maxx],bit[maxx+5];
+ll sum=0;
+ll blocks;
+ 
+struct type{
+    ll l,r;
+    ll ind;
+};
+type query[maxx];
+
+void update(ll ind,ll val){
+    while(ind<=maxx){
+        bit[ind]+=val;
+        ind+=ind&(-ind);
+    }
+}
+ll getsum(ll ind){
+    ll sum=0;
+    while(ind>0){
+        sum+=bit[ind];
+        ind-=ind&(-ind);
+    }
+    return sum;
+}
+bool comp(type a,type b){
+    if(a.l/blocks!=b.l/blocks)
+    return a.l<b.l;
+    
+    return a.r<b.r;
+}
+void giveindex(){
+    set<ll>s1;
+    map<ll,ll>m1;
+    ll counts=1;
+    
+    rep(i,1,n+1)
+    s1.insert(a[i]);
+    
+    while(!s1.empty()){
+        ll val=*s1.begin();
+        m1[val]=counts++;
+        s1.erase(val);
+    }
+    rep(i,1,n+1)
+    a[i]=m1[a[i]];
+}
+
+void mos_algo(){
+    blocks=(ll)sqrt(n);
+    sort(query,query+q,comp);
+    ll cl,cr,sum=0;
+    cl=cr=1;
+    giveindex();
+   
+    rep(i,1,q+1){
+        ll l=query[i].l;
+        ll r=query[i].r;
+        ll ind=query[i].ind;
+
+        while(cl<l){
+            sum-=getsum(a[cl]-1);
+            update(a[cl],-1);
+            cl++;
+        }
+        while(cl>l){
+            sum+=getsum(a[cl-1]-1);
+            update(a[cl-1],1);
+            cl--;
+        }
+        while(cr<=r){
+            sum+=getsum(n)-getsum(a[cr]);
+            update(a[cr],1);
+            cr++;
+        }
+        while(cr>r+1){
+            sum-=getsum(n)-getsum(a[cr-1]);
+            update(a[cr-1],-1);
+            cr--;
+        }
+        ans[ind]=sum;
+    }
+}
+im{
+    scn(n);
+    rep(i,1,n+1)
+    scn(a[i]);
+    
+    scn(q);
+    rep(i,1,q+1){
+        ll l,r;
+        scns(l,r);
+        query[i].l=l;
+        query[i].r=r;
+        query[i].ind=i;
+    }
+    mos_algo();
+    
+    rep(i,1,q+1){
+        print(ans[i]);
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/ICPC16D
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         800005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,k;
+vec v1[maxx];
+ll a[maxx],dp[maxx];
+
+im{
+    tc{
+        scn(n);
+        rep(i,0,n)
+        scn(a[i]);
+        sort(a,a+n);
+        mem(dp,0);
+        ll maxim=0;
+        rep(i,0,n){
+            dp[a[i]]=1;
+            maxim=max(maxim,a[i]);
+        }
+        
+        rep(i,0,n){
+            ll val=a[i];
+            for(ll j=2*val;j<=maxim;j+=val)
+            if(dp[j]){
+                dp[j]+=dp[val];
+                dp[j]%=mod;
+            }
+        }
+        ll ans=0;
+        rep(i,0,n){
+            ans+=dp[a[i]];
+            ans%=mod;
+        }
+        print(ans);
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/ICPC16F
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,k;
+vec v1[maxx];
+ll a[maxx];
+
+im{
+    tc{
+        ll d,D;
+        scns(n,m);
+        scns(d,D);
+        if(D*n<m || d*n>m)
+        printf("-1\n");
+        else{
+            ll x=1,y=1;
+            rep(i,1,m/n+1){
+                rep(j,1,n+1){
+                    y=y%n;
+                    if(!y) 
+                    y=n;
+                    v1[x].pb(y);
+                    x++;y++;
+                }
+                x=1;y=i+1;
+            }
+            ll req=m%n;
+            rep(i,1,req+1){
+                y=y%n;
+                if(!y) 
+                y=n;
+                v1[x].pb(y);
+                x++;y++;
+            }
+            
+            rep(i,1,n+1)
+                for(auto it:v1[i])
+                    printf("%lld %lld\n",i,it);
+            rep(i,0,n+1)
+            v1[i].clear();
+        }
+    }
+}
+
+https://www.codechef.com/problems/ICPC16B
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,k,a[maxx];
+vec v1[maxx],v2[maxx];
+
+im{
+    tc{
+        scn(n);
+        rep(i,0,n)
+        scn(a[i]);
+        map<ll,ll>m1;
+        rep(i,0,n)
+        m1[a[i]]=1;
+        sort(a,a+n);
+        if(n==1)
+        printf("yes");
+        else{
+            if(m1[a[0]*a[1]] && m1[a[1]] && m1[a[0]]){
+                if(m1[a[n-1]*a[n-2]] && m1[a[n-1]] && m1[a[n-2]]){
+                    if(m1[a[0]*a[n-1]] && m1[a[0]] && m1[a[n-1]])
+                        printf("yes");
+                    else
+                    printf("no");
+                }
+                else
+                printf("no");
+            }
+            else
+            printf("no");
+        }
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/EQUALMOD
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,k;
+vec v1[maxx],vis;
+ll a[maxx],b[maxx];
+
+im{
+    tc{
+        scn(n);
+        rep(i,0,n)
+        scn(a[i]);
+        rep(i,0,n)
+        scn(b[i]);
+        pairs p1[n+5];
+        ll minim=inf;
+        rep(i,0,n){
+            p1[i].f=a[i]%b[i];
+            p1[i].s=b[i];
+            minim=min(minim,b[i]);
+        }
+        //cout<<minim<<endl;
+        sort(p1,p1+n);
+        ll start[n+5]={0};
+        ll zero[n+5]={0};
+        
+        start[0]=p1[0].f;
+        rep(i,1,n)
+        start[i]=start[i-1]+p1[i].f;
+
+        zero[n-1]=p1[n-1].s-p1[n-1].f;
+        for(ll i=n-2;i>=0;i--)
+        zero[i]=zero[i+1]+(p1[i].s-p1[i].f);
+    
+        
+        ll ans=zero[0];
+        rep(i,0,n){
+            ll val=p1[i].f;
+            if(val>=minim)
+            continue;
+            ll cost=n*val-start[i]+zero[i+1];
+            ans=min(ans,cost);
+        }
+        print(ans);
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/ORDTEAMS
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         5000005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,k;
+vec v1[maxx],vis;
+
+im{
+    tc{
+        ll a[3][3];
+        rep(i,0,3)
+            rep(j,0,3)
+                scn(a[i][j]);
+        ll flag=1;
+        rep(i,0,3){
+            rep(j,i+1,3){
+                if(a[i][0]>=a[j][0] && a[i][1]>=a[j][1] && a[i][2]>=a[j][2])
+                    if(a[i][0]>a[j][0] or a[i][1]>a[j][1] or a[i][2]>a[j][2])
+                    continue;
+                if(a[j][0]>=a[i][0] && a[j][1]>=a[i][1] && a[j][2]>=a[i][2])
+                    if(a[j][0]>a[i][0] or a[j][1]>a[i][1] or a[j][2]>a[i][2])
+                    continue;
+                flag=0;
+            }
+        }
+        if(flag)
+        printf("yes");
+        else
+        printf("no");
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/CLOVER
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         100005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,q;
+ll val[maxx],a[maxx],tree[4*maxx];
+vec v1[maxx],v2[maxx],vis;
+ll in[maxx],out[maxx],tim=1,ans[maxx];
+
+void dfs_euler(ll u){
+    vis[u]=1;
+    in[u]=tim;
+    a[in[u]]=u;
+    for(auto it:v1[u]){
+        if(!vis[it]){
+            tim++;
+            dfs_euler(it);
+        }
+    }
+    out[u]=tim;
+}
+void update(ll ss,ll se,ll ind,ll val,ll node){
+    if(ss==se){
+        //a[ind]=val;
+        tree[node]=val;
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    if(ind<=mid)
+    update(ss,mid,ind,val,2*node+1);
+    else
+    update(mid+1,se,ind,val,2*node+2);
+    
+    tree[node]=max(tree[2*node+1],tree[2*node+2]);
+}
+ll query(ll ss,ll se,ll qs,ll qe,ll node){
+    if(ss>qe || se<qs)
+    return 0;
+    if(ss>=qs && se<=qe)
+    return tree[node];
+    ll mid=ss+(se-ss)/2;
+    ll left=query(ss,mid,qs,qe,2*node+1);
+    ll right=query(mid+1,se,qs,qe,2*node+2);
+    ll ans=max(left,right);
+    
+    return ans;
+}
+void dfs(ll u){
+    ll diff=val[u]-val[1];
+    ll value=query(0,maxx,diff,maxx,0);
+    if(value)
+    ans[u]=a[value];
+    else
+    ans[u]=-1;
+    v2[val[u]].pb(u);
+    update(0,maxx,val[u],in[u],0);
+    vis[u]=1;
+    for(auto it:v1[u])
+        if(!vis[it])
+            dfs(it);
+    v2[val[u]].pop_back();
+    ll size=v2[val[u]].size();
+    ll index=0;
+    if(size)
+    index=v2[val[u]][size-1];
+    update(0,maxx,val[u],in[index],0);
+}
+im{
+    scns(n,q);
+    rep(i,1,n+1)
+    cin>>val[i];
+    rep(i,1,n){
+        ll u,v;
+        scns(u,v);
+        u++; v++;
+        v1[u].pb(v); v1[v].pb(u);
+    }
+    vis.assign(n+1,0);
+    dfs_euler(1);
+    vis.assign(n+1,0);
+    dfs(1);
+    while(q--){
+        ll ind;
+        scn(ind);
+        if(ans[ind+1]==-1)
+        print(ans[ind+1]);
+        else{
+            print(ans[ind+1]-1);
+            printf(" ");
+            print(val[ans[ind+1]]);
+        }
+        nl;
+    }
+}
+
+https://www.codechef.com/problems/SWITOG
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,k,q;
+char val[maxx],a[maxx];
+vec v1[maxx],vis;
+ll in[maxx],out[maxx],tim;
+ll inp,ind;
+
+struct type{
+    ll freq[26][2]={};
+    ll lazy[26]={};
+};
+type tree[4*maxx];
+
+void dfs(ll u){
+    vis[u]=1;
+    in[u]=tim;
+    a[in[u]]=val[u-1];
+    for(auto it:v1[u]){
+        if(!vis[it]){
+            tim++;
+            dfs(it);
+        }
+    }
+    out[u]=tim;
+}
+ll query(ll ss,ll se,ll qs,ll qe,ll node){
+    rep(i,0,26){
+        if(tree[node].lazy[i]){
+            swap(tree[node].freq[i][0],tree[node].freq[i][1]);
+            if(ss!=se){
+                tree[2*node+1].lazy[i]=!tree[2*node+1].lazy[i];
+                tree[2*node+2].lazy[i]=!tree[2*node+2].lazy[i];
+            }
+            tree[node].lazy[i]=0;
+        }
+    }
+    if(ss>qe || se<qs)
+    return 0;
+    if(ss>=qs && se<=qe){
+        ll sum=0;
+        rep(i,0,26){
+            sum+=tree[node].freq[i][1];
+        }
+        return sum;
+    }
+    ll mid=ss+(se-ss)/2;
+    ll left=query(ss,mid,qs,qe,2*node+1);
+    ll right=query(mid+1,se,qs,qe,2*node+2);
+    ll ans=left+right;
+    
+    return ans;
+}
+void update(ll ss,ll se,ll us,ll ue,ll node){
+    rep(i,0,26){
+        if(tree[node].lazy[i]){
+            swap(tree[node].freq[i][0],tree[node].freq[i][1]);
+            if(ss!=se){
+                tree[2*node+1].lazy[i]=!tree[2*node+1].lazy[i];
+                tree[2*node+2].lazy[i]=!tree[2*node+2].lazy[i];
+            }
+            tree[node].lazy[i]=0;
+        }
+    }
+    if(ss>ue || se<us)
+    return ;
+    if(ss>=us && se<=ue){
+        ll i=val[ind-1]-'a';
+        swap(tree[node].freq[i][0],tree[node].freq[i][1]);
+        if(ss!=se){
+            tree[2*node+1].lazy[i]=!tree[2*node+1].lazy[i];
+            tree[2*node+2].lazy[i]=!tree[2*node+2].lazy[i];
+        }
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    update(ss,mid,us,ue,2*node+1);
+    update(mid+1,se,us,ue,2*node+2);
+    
+    rep(i,0,26){
+    tree[node].freq[i][0]=tree[2*node+1].freq[i][0]+tree[2*node+2].freq[i][0];
+    tree[node].freq[i][1]=tree[2*node+1].freq[i][1]+tree[2*node+2].freq[i][1];
+    }
+}
+void build(ll ss,ll se,ll node){
+    if(ss==se){
+        tree[node].freq[a[ss]-'a'][0]++;
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    build(ss,mid,2*node+1);
+    build(mid+1,se,2*node+2);
+    rep(i,0,26)
+    tree[node].freq[i][0]=tree[2*node+1].freq[i][0]+tree[2*node+2].freq[i][0];
+}
+im{
+    scns(n,q);
+    rep(i,1,n){
+        ll u,v;
+        scns(u,v);
+        v1[u].pb(v); v1[v].pb(u);
+    }
+    rep(i,0,n)
+    cin>>val[i];
+    vis.assign(n+1,0);
+    dfs(1);
+    build(0,n-1,0);
+    while(q--){
+        scns(inp,ind);
+        if(inp==1){
+            update(0,n-1,in[ind],out[ind],0);
+        }
+        else{
+            ll ans=query(0,n-1,in[ind],out[ind],0);
+            print(ans);
+            nl;
+        }
+    }
+}
+
+https://www.codechef.com/OCT19A/problems/EVEDG
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m;
+vec v1[maxx],vis;
+ll node,odd;
+ll c1,c2;
+
+void dfs(ll u){
+    vis[u]=1;
+    for(auto it:v1[u]){
+        if(!vis[it]){
+           c1=u; c2=it;
+           dfs(it);
+        }
+    }     
+    if(v1[u].size()%2){
+        odd=1;
+        node=u;
+    }
+}
+void clearing(){
+    rep(i,0,n+1)
+        v1[i].clear();
+    vis.assign(n+1,0);
+}
+im{
+    tc{
+        scns(n,m);
+        ll flag=0;
+        node=c1=c2=odd=0;
+        vis.assign(n+1,0);
+        rep(i,0,m){
+            ll u,v;
+            scns(u,v);
+            v1[u].pb(v); v1[v].pb(u);
+        }
+        if(!(m%2)){
+            printf("1\n");
+            rep(i,0,n)
+                printf("1 ");
+            nl;
+        }
+        else{
+            rep(i,1,n+1){
+                if(!vis[i]){
+                    dfs(i);
+                    if(odd){
+                        flag=1;
+                        break;
+                    }
+                }
+            }
+            if(flag){
+                printf("2\n");
+                rep(i,1,n+1){
+                    if(i==node)
+                        printf("2 ");
+                    else
+                        printf("1 ");
+                }
+                nl;
+            }
+            else{
+                printf("3\n");
+                rep(i,1,n+1){
+                    if(i==c1)
+                        printf("2 ");
+                    else if(i==c2)
+                        printf("3 ");
+                    else
+                        printf("1 ");
+                }
+                nl;
+            }
+        }
+        clearing();
+    }
+}
+
+https://www.codechef.com/problems/IITK1P10
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         5000005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,a[maxx],val[maxx];
+vec v1[maxx],vis;
+ll in[maxx],out[maxx],times;
+ll tree[4*maxx];
+
+void dfs(ll node){
+    in[node]=times;
+    a[in[node]]=val[node-1];
+    //cout<<a[times]<<" ";
+    vis[node]=1;
+    for(auto it:v1[node]){
+        if(!vis[it]){
+            times++;
+            dfs(it);
+        }
+    }
+    out[node]=times;
+}
+ll query(ll ss,ll se,ll qs,ll qe,ll node){
+    if(ss>qe || se<qs)
+    return 0;
+    if(ss>=qs && se<=qe)
+    return tree[node];
+    ll mid=ss+(se-ss)/2;
+    ll left=query(ss,mid,qs,qe,2*node+1);
+    ll right=query(mid+1,se,qs,qe,2*node+2);
+    ll ans=left+right;
+    return ans;
+}
+void update(ll ss,ll se,ll val,ll ind,ll node){
+    if(ss==se){
+        a[ss]+=val;
+        if(!a[ss])
+            tree[node]=1;
+        else
+            tree[node]=0;
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    if(ind<=mid)
+        update(ss,mid,val,ind,2*node+1);
+    else
+        update(mid+1,se,val,ind,2*node+2);
+    
+    tree[node]=tree[2*node+1]+tree[2*node+2];
+}
+void build(ll ss,ll se,ll node){
+    if(ss==se){
+        if(!a[ss])
+            tree[node]=1;
+        return ;
+    }
+    ll mid=ss+(se-ss)/2;
+    build(ss,mid,2*node+1);
+    build(mid+1,se,2*node+2);
+    
+    tree[node]=tree[2*node+1]+tree[2*node+2];
+}
+im{
+    scns(n,m);
+    rep(i,1,n){
+        ll u,v;
+        scns(u,v);
+        v1[u].pb(v); v1[v].pb(u);
+    }
+    rep(i,0,n)
+        scn(val[i]);
+    vis.assign(n+1,0);
+    rep(i,1,n+1)
+        if(!vis[i])
+            dfs(i);
+    build(0,n-1,0);
+    while(m--){
+        char c;
+        cin>>c;
+        if(c=='Q'){
+            ll ind;
+            scn(ind);
+            ll ans=query(0,n-1,in[ind],out[ind],0);
+            print(ans);
+            nl;
+        }
+        else{
+            ll val,ind;
+            scns(val,ind);
+            update(0,n-1,ind,val,0);
+        }
+    }
+}
+
+https://www.codechef.com/OCT19A/problems/MARM
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	     printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,k,q,a[3][maxx],ans[maxx];
+//vec v1[maxx],vis;
+//ll tree[4*maxx],lazy[4*maxx];
+im{
+    tc{
+        scns(n,k);
+        ll temp[n+1];
+        rep(i,0,n){
+            scn(a[0][i]);
+            temp[i]=a[0][i];
+        }
+        if(n%2 && k>n/2)
+            a[0][n/2]=0;
+        rep(i,0,n){
+            temp[i]=temp[i]^temp[n-1-i%n];
+            a[1][i]=temp[i];
+        }
+        rep(i,0,n){
+            temp[i]=temp[i]^temp[n-1-i%n];
+            a[2][i]=temp[i];
+        }
+        ll fold=k/n;
+        fold%=3;
+        ll left=k%n;
+        rep(i,0,left)
+            ans[i]=a[(fold+1)%3][i];
+        rep(i,left,n)
+            ans[i]=a[fold][i];
+        rep(i,0,n){
+            print(ans[i]);
+            printf(" ");
+        }
+        nl;
+    }
+}
+
+https://www.codechef.com/OCT19A/problems/MSV
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll           long long
+#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define scn(a)       scanf("%lld",&a)
+#define nl	         printf("\n")
+#define scns(a,b)    scanf("%lld %lld",&a,&b)
+#define print(a)     printf("%lld",a)
+#define tc           ll t; scn(t); while(t--)
+#define vec          vector<ll>
+#define pb           push_back    
+#define pairs        pair<ll,ll>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define srt(v)       sort(v.rbegin(),v.rend())
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define im           int main()
+#define maxx         500005
+#define inf          LLONG_MAX
+#define zer          LLONG_MIN
+ll mod=1e9+7,n,m,q,a[maxx];
+//vec v1[maxx],vis;
+//ll tree[4*maxx],lazy[4*maxx];
+ll divs[1000005];
+void divisors(ll n){
+    for(ll i=1;i*i<=n;i++){
+        if(!(n%i)){
+            divs[i]++;
+            divs[n/i]++;
+            if(n/i==i)
+                divs[i]--;
+        }
+    }
+}
+im{
+    tc{
+        scn(n); 
+        ll maxim=0;
+        mem(divs,0);
+        rep(i,0,n)
+            scn(a[i]);
+        rep(i,0,n){
+            ll val=divs[a[i]];
+            maxim=max(maxim,val);
+            //cout<<divs[a[i]]<<endl;
+            divisors(a[i]);
+        }
+        print(maxim);
+        nl;
+        //divs.clear();
+    }
+}
