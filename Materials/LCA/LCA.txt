@@ -1,50 +1,53 @@
 #include<bits/stdc++.h>
 using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define ll           long long
-#define rep(i,j,n)   for(ll i=j;i<n;i++)
-#define scn(a)       scanf("%lld",&a)
-#define scns(a,b)    scanf("%lld %lld",&a,&b)
-#define print(a)     printf("%lld\n",a)
-#define tc           ll t; scn(t); while(t--)
-#define vec          vector<ll>
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
 #define pb           push_back    
-#define pairs        pair<ll,ll>
+#define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define maxx         500005
-#define inf          LLONG_MAX
-#define zer          LLONG_MIN
-ll mod=1e9+7,n,m,a[maxx];
-vec v1[maxx],vis;
-ll up[maxx][30],in[maxx],out[maxx];
-ll lim,query,tim=1;
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
 
-void dfsLca(ll u,ll par)
+int n,m,a[N],lim,query,tim=1;
+int up[N][30],in[N],out[N],level[N];
+vec v1[N],vis;
+
+void dfsLca(int u,int par)
 {
 	up[u][0]=par;
+
 	in[u]=tim++;
 	
 	rep(i,1,lim+1)
 	up[u][i]=up[up[u][i-1]][i-1];
-	
+
 	for(auto it:v1[u])
 	if(it!=par)
-	{
-	    level[it]=level[u]+1;
-	    dfsLca(it,u);
-	}
+	level[it]=level[u]+1,dfsLca(it,u);
 
 	out[u]=tim++;
 }
 
-bool isancestor(ll u,ll v)
+bool isancestor(int u,int v)
 {
 	return (in[u]<in[v] && out[u]>out[v]);
 }
 
-ll lca(ll u,ll v)
+int findLca(int u,int v)
 {
 	if(isancestor(u,v))
 	return u;
@@ -55,7 +58,7 @@ ll lca(ll u,ll v)
 	if(u==v)
 	return u;
 	
-	for(ll i=lim;i>=0;i--)
+	for(int i=lim;i>=0;i--)
 	{
 		if(!isancestor(up[u][i],v))
 		u=up[u][i];
@@ -64,32 +67,61 @@ ll lca(ll u,ll v)
 	return up[u][0];
 }
 
+int logg(int num,int base)
+{
+    int cnt=-1;
+
+    while(num>0)
+    cnt++,num/=base;
+
+    return cnt;
+}
+
+ll distacne(int u,int v)
+{
+    ll dis=1LL*level[u]-1LL*level[v];
+
+    return dis;
+}
+
+void init()
+{
+    rep(i,0,n+1)
+    v1[i].clear(),in[i]=0,out[i]=0,level[i]=0;
+
+    tim=1;
+}
+
 int main()
 {
-	scns(n,m);
+	scn(t);
 
-	while(m--)
-	{
-		ll a,b;
-		scns(a,b);
-		
-		v1[a].pb(b);  
-		v1[a].pb(b);
-	}
-	
-	lim=(ll)log2(n)+1;
-	dfsLca(1,1);
+    while(t--)
+    {
+        scns(n,m);
 
-	scn(query);
+        init();
 
-	while(query--)
-	{
-		ll a,b;
-		scns(a,b);
-		
-		ll ans=lca(a,b);
+        for(int i=0;i<m;i++)
+        {
+            int a,b; scns(a,b);
+            
+            v1[a].pb(b);  v1[a].pb(b);
+        }
+        
+        lim = logg(n,2)+1;
+        
+        dfsLca(1,1);
 
-		print(ans);
-		printf("\n");
-	}
+        scn(query);
+
+        while(query--)
+        {
+            int a,b; scns(a,b);
+            
+            int lca = findLca(a,b);
+
+            print(lca);
+        }
+    }
 }
