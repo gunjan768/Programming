@@ -18,11 +18,10 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
 #define inf          INT_MAX
-const int mod=1e9+7;
-const int N=5e5+5;
-int t;
+const int mod = 1e9+7;
+const int N = 5e5+5;
 
-int n,ind;
+int n, ind;
 
 int min(int a,int b)
 {
@@ -32,30 +31,30 @@ int min(int a,int b)
     return b;
 }
 
-int manacher(string s1)
+int manacher(string &s1)
 {
-    n=s1.size();
+    n = s1.size();
 
-    int r=0,c=0,maxLen=0,palind[n+1]={};
+    int r = 0, c = 0, maxLen = 0, palind[n+1] = {};
   
-    rep(i,0,n)
+    for(int i=0;i<n;i++)
     {
-        int mirror=2*c-i;
+        int mirror = 2*c-i;
 
         if(i<r)
-        palind[i]=min(mirror,palind[mirror]);
+        palind[i] = min(r-i,palind[mirror]);
 
-        int st=i+(palind[i]+1),end=i-(palind[i]+1);
+        int st = i-(palind[i]+1), end = i+(palind[i]+1);
 
-        while(st<n && end>=0 && s1[st]==s1[end])
-        st++,end--,palind[i]++;
+        while(st >= 0 && end<n && s1[st] == s1[end])
+        st--, end++, palind[i]++;
 
         if(i+palind[i]>r)
         {
-            c=i,r=i+palind[i];
+            c = i, r = i+palind[i];
 
             if(palind[i]>maxLen)
-            maxLen=palind[i],ind=i;
+            maxLen = palind[i], ind = i;
         }
     }
 
@@ -64,32 +63,22 @@ int manacher(string s1)
 
 int main()
 {
-    scn(t);
+    int test; scn(test);
 
-    while(t--)
+    while(test--)
     {
-        string s1,s2;
-        cin>>s2;
+        string s1, s2, ans; cin>>s2;
 
-        n=s2.size();
+        s1.pb('#'), n = s2.size();
         
-        rep(i,0,n)
-        {
-            s1.pb('#');
-            s1.pb(s2[i]);
-        }
-        
-        s1.pb('#');
+        for(int i=0;i<n;i++)
+        s1.pb(s2[i]), s1.pb('#');
 
-        string ans;
-
-        int maxLen=manacher(s1);
+        int maxLen = manacher(s1);
  
         for(int i=ind-maxLen; i<ind+maxLen; i++)
         if(s1[i]!='#')
         ans.pb(s1[i]);
-
-        // cout<<maxLen<<endl;
         
         cout<<ans<<endl;
     }

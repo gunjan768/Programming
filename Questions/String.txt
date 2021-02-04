@@ -1,1 +1,2 @@
-1. https://codeforces.com/contest/797/problem/C ( using stack )
+https://codeforces.com/contest/797/problem/C ( using stack )
+https://leetcode.com/problems/rotate-string/  (kmp)

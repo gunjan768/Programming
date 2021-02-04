@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
+
+int n;
+
+union A
+{
+    int a,b; short e=4; long g;
+    char ch; float c; double d;
+};
+
+union union_example 
+{ 
+    int integer; 
+    float decimal; 
+    char name[21]; 
+}; 
+
+class Gunjan
+{
+    int a; char ch[7];
+};
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        A obj; 
+        
+        obj.a=15; obj.b=5; obj.ch='A';
+
+        char arr[5],chr;
+
+        cout<<"Size of union "<<sizeof(A)<<endl; cout<<"Size of class "<<sizeof(Gunjan)<<endl;
+        cout<<"Size of char keyword "<<sizeof(char)<<endl; 
+        cout<<"Size of char "<<sizeof chr<<endl; cout<<"Size of char array "<<sizeof(arr)<<endl;
+
+        cout<<"Size of 2nd union "<<sizeof(union_example)<<endl;
+        // union_example u={18,38,"geeksforgeeks"}; 
+
+        // printf("\nunion data:\n integeer: %d\n""decimal: %.2f\n name: %s\n",
+        // u.integer, u.decimal, u.name); 
+
+        cout<<obj.a<<endl; cout<<obj.b<<endl; 
+        cout<<obj.c<<endl; cout<<obj.d<<endl;
+        cout<<obj.ch<<endl; 
+        cout<<obj.e<<endl; cout<<obj.g<<endl;
+    }
+}

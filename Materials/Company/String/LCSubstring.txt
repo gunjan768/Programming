@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=1e4+5;
+int t;
+
+int n,m,dp[N][N],ans;
+string s1,s2;
+
+int solve(int i,int j)
+{
+    if(i<0 || j<0)
+    return 0;
+    
+    if(dp[i][j] != -1)
+    return dp[i][j];
+    
+    if(s1[i]==s2[j])
+    dp[i][j]=1+solve(i-1,j-1);
+    else
+    dp[i][j]=0;
+
+    solve(i-1,j);
+    solve(i,j-1);
+
+    ans=max(ans,dp[i][j]);
+
+    return dp[i][j];
+}
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        scns(n,m);
+        
+        cin>>s1>>s2; 
+        
+        rep(i,0,n+1)
+        rep(j,0,m+1)
+        dp[i][j]=-1;
+        
+        solve(n-1,m-1);
+
+        cout<<ans<<endl;
+        
+        ans=0;
+    }
+}

@@ -1,0 +1,5 @@
+https://leetcode.com/problems/longest-well-performing-interval/   (max subarray length with sum>0)
+https://leetcode.com/problems/path-with-maximum-gold/   (Backtracking with maximum gold)
+
+https://binarysearch.com/problems/Longest-Even-Sum-Path
+https://leetcode.com/problems/binary-tree-maximum-path-sum/

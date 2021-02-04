@@ -1,0 +1,48 @@
+class Bst
+{
+    public:
+        int mn,mx,sz;
+        bool isBst;
+    
+        Bst(int mn,int mx,int sz,bool isBst) : isBst(isBst)
+        {
+            this->mn=mn; this->mx=mx; this->sz=sz;
+        }
+};
+
+Bst dfs(Node *root)
+{
+    Bst val(1e9,-1e9,0,1);
+    
+    if(!root)
+    return val;
+    
+    Bst left = dfs(root->left);
+    Bst right = dfs(root->right);
+    
+    
+    if(left.isBst && right.isBst)
+    {
+        if(root->data>left.mx && root->data<right.mn)
+        {
+            val.sz=left.sz+right.sz+1;
+            val.mn=min(root->data,left.mn),val.mx=max(root->data,right.mx);
+        }
+        else
+        val.sz=max(left.sz,right.sz),val.isBst=0;
+    }
+    else
+    val.sz=max(left.sz,right.sz),val.isBst=0;
+    
+    return val; 
+}
+
+/*You are required to complete this method */
+// Return the size of the largest sub-tree which is also a BST
+int largestBst(Node *root)
+{
+	if(!root)
+	return 0;
+	
+	return dfs(root).sz;
+}

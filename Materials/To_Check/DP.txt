@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 1e2+5;
+
+int dp[N][N][15], vis[N][N];
+int dx[] = {0,0,1,-1};
+int dy[] = {-1,1,0,0};
+
+void solve(int i,int j,vector<vector<int>> &a,int st,int end,int n,int m,int cnt)
+{
+    if(i<0 || j<0 || i >= n || j >= m || a[i][j] == 1 || vis[i][j] == 1)
+    return 1e8;
+
+    if(i == st && j == end)
+    {
+        if(cnt == 0)
+        return 1;
+
+        return 1e8;
+    }
+
+    if(dp[i][j][cnt] != 1e8)
+    return dp[i][j][cnt];
+
+    if(a[i][j] == 2)
+    cnt--;
+
+    int ans = 1e8; vis[i][j] = 1;
+
+    for(int k=0;k<4;k++)
+    {
+        int x = i+dx[k], y = j+dy[k];
+
+        ans = min(ans,1+solve(x,y,a,n,m,cnt)); 
+    }
+
+    return dp[i][j][cnt] = ans;
+}
+
+int minMoves(vector<vector<int>> maze,int x,int y)
+{
+    int n = (int)maze.size(), m = (int)maze[0].size(), cnt = 0;
+
+    for(int i=0;i<n;i++)
+    for(int j=0;j<m;j++)
+    {
+        dp[i][j] = 1e8;
+
+        if(a[i][j] == 2)
+        cnt++;
+    }
+
+    int ans = solve(0,0,maze,st,end,n,m,cnt);
+
+    if(ans >= 1e8)
+    ans = -1;
+
+    return ans;
+}
+
+int main()
+{
+    int test; test = 1;
+
+    while(test--)
+    {
+        
+    }
+}

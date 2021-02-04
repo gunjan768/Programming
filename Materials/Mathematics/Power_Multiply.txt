@@ -11,24 +11,47 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
-const int mod = 1e9+7;
-const int N = 5e5+5;
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
 
 int n;
 
-int main()
+int power(int a,int b)
 {
-    int test; scn(test);
-
-    while(test--)
+    int res = 1;
+ 
+    while(b)
     {
-        
+        if(b&1)
+        res = (1LL*res*a)%mod;
+ 
+        a = (1LL*a*a)%mod, b >>= 1;
     }
+ 
+    return res;
+}
+
+int multiply(int a,int b)
+{
+    int res=1;
+ 
+    while(b)
+    {
+        if(b&1)
+        res=(1LL*res+a)%mod;
+ 
+        a=(2LL*a)%mod;
+        
+        b>>=1;
+    }
+ 
+    return res;
 }

@@ -1,0 +1,83 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod = 1e9+7;
+const int N = 5e5+5;
+
+int n;
+ 
+void multiply(int f[3][3],int m[3][3])
+{
+    int row1 = 2, col1 = 2, row2 = 2, col2 = 2, res[row1][col2];
+ 
+    for(int i=0;i<row1;i++)
+    for(int j=0;j<col1;j++)
+    {
+        res[i][j] = 0; 
+ 
+        for(int k=0;k<row2;k++)
+        res[i][j] = (1LL*res[i][j] + 1LL*f[i][k]*m[k][j])%mod;; 
+    }
+ 
+    for(int i=0;i<row1;i++)
+    for(int j=0;j<col2;j++)
+    f[i][j] = res[i][j];
+}
+ 
+void power(int n,int f[3][3])
+{
+    if(n<2) 
+    return;
+    
+    // int m[3][3] = {{1,1,1},{1,0,0},{0,1,0}};
+    
+    int m[2][2] = {{1,1},{1,0}};
+    
+    power(n/2,f), multiply(f,f);
+    
+    if(n&1) 
+    multiply(f,m);
+}
+ 
+int fibo(int n)
+{
+    // int f[3][3] = {{1,1,1},{1,0,0},{0,1,0}};
+
+    int f[2][2] = {{1,1},{1,0}};
+ 
+    if(n == 0) 
+    return 0;
+ 
+    power(n-1, f);
+ 
+    f[0][0] %= mod;
+    
+    return f[0][0];
+}
+ 
+int main()
+{
+    int test; scn(test);
+
+    while(test--)
+    {
+
+    }
+}

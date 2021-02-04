@@ -1,0 +1,23 @@
+					Mo's Algorithm
+
+1. https://www.codechef.com/problems/IITI15 ( Sherlock and Inversions )
+2. https://www.hackerearth.com/problem/algorithm/substrings-count-3/
+3. https://codeforces.com/contest/617/problem/E  ( Xor and Favourite Number)
+
+
+					Binary Indexed Tree
+
+https://www.spoj.com/problems/TRIPINV/  ( Triple inversion )
+https://www.hackerearth.com/challenges/college/Code-smash-2/algorithm/b205355022464943ba46fb69a1962152/
+
+
+					Segment Tree
+
+1. https://www.hackerearth.com/practice/math/number-theory/basic-number-theory-2/practice-problems/algorithm/zoro-and-his-curiosity-1/
+2. https://codeforces.com/contest/620/problem/E ( important )
+3. https://www.hackerearth.com/practice/data-structures/advanced-data-structures/segment-trees/practice-problems/algorithm/distinct-integers-in-range-66eca44b/description/
+   ( bitset segment tree )
+
+4. https://codeforces.com/contest/61/problem/E
+5. https://codeforces.com/contest/145/standings/friends/true
+6. https://codeforces.com/contest/558/problem/E

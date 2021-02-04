@@ -1,0 +1,30 @@
+https://practice.geeksforgeeks.org/problems/duplicate-subtree-in-binary-tree/1#
+
+string dfs(Node *root,bool &flag,unordered_map<string,bool> &mp)
+{
+    if(!root)
+    return "$";
+    
+    string left = dfs(root->left,flag,mp);
+    string right = dfs(root->right,flag,mp);
+    
+    string curr = root->data + left + right;
+    
+    if(curr.size()>3 && mp.find(curr) != mp.end())
+    flag=1;
+    else
+    mp[curr]=1;
+    
+    return curr;
+}
+
+/*This function returns true if the tree contains 
+a duplicate subtree of size 2 or more else returns false*/
+bool dupSub(Node *root)
+{
+    bool flag=0; unordered_map<string,bool>mp;
+    
+    dfs(root,flag,mp);
+    
+    return flag;
+}

@@ -1,0 +1,154 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
+
+int n;
+
+class Node
+{
+    public:
+        Node *next; int data;
+
+        Node(int data)
+        {
+            next = nullptr;
+            this->data = data; 
+        }
+};
+
+class Stack
+{
+    private:
+        Node *top; int sz;
+
+    public:
+        Stack() : sz(0)
+        {
+            top = nullptr;
+        }
+
+        void push(int);
+        void pop();
+        int topElement();
+        bool empty();
+        int size();
+        void display();
+};
+
+void Stack::push(int val)
+{
+    Node *curr = new Node(val); sz++;
+
+    curr->next = top; top = curr;
+}
+
+void Stack::pop()
+{
+    if(empty())
+    return;
+
+    Node *temp = top;
+
+    top = top->next; sz--;
+
+    delete(temp);
+}
+
+int Stack::topElement()
+{
+    if(empty())
+    return -1;
+
+    return top->data;
+}
+
+bool Stack::empty()
+{
+    return (top == nullptr);
+}
+
+int Stack::size()
+{
+    return sz;
+}
+
+void Stack::display()
+{
+    if(empty())
+    return;
+
+    Node *curr = top;
+
+    while(curr != nullptr)
+    printf("%d ",curr->data),curr=curr->next;
+
+    printf("\n");
+}
+
+int main()
+{
+	scn(t);
+
+    while(t--)
+    {
+        Stack *s1 = new Stack();
+
+        bool flag = true;
+
+        while(flag)
+        {
+            int type; scn(type);
+
+            switch(type)
+            {
+                case 1:
+                { 
+                    int val; scn(val);
+
+                    s1->push(val);
+
+                    break;
+                }
+
+                case 2:
+                {
+                    int top = s1->topElement(); s1->pop();
+
+                    print(top);
+
+                    break;
+                }
+
+                case 3:
+                {
+                    s1->display(); print(s1->size());
+
+                    break;
+                }
+
+                default:
+                    flag = false;
+            }
+        }
+    }
+}

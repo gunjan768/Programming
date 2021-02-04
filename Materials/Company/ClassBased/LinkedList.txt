@@ -1,0 +1,123 @@
+// https://practice.geeksforgeeks.org/problems/segregate-even-and-odd-nodes-in-a-linked-list/0#
+
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+
+int n;
+
+class Node
+{
+    public:
+        int data; Node *next;
+        
+        Node(int data): data(data) 
+        {
+            next = nullptr;
+        }
+};
+
+class LinkedList
+{
+    public:
+        void push(Node*&, int);
+        void segregate(Node*&);
+        void display(Node*);
+};
+
+void LinkedList::push(Node *&head,int data)
+{
+    static Node *curr = NULL; 
+    Node *tmp = new Node(data);
+    
+    if(!head)
+    head = curr = tmp;
+    else
+    curr->next = tmp, curr = tmp;
+}
+
+void LinkedList::segregate(Node *&head)
+{
+    Node *even = NULL, *odd = NULL, *curr = head, *curr1, *curr2;
+    
+    while(curr)
+    {
+        if(curr->data%2 == 0)
+        {
+            if(!even)
+            even = curr1 = curr;
+            else
+            curr1->next = curr, curr1 = curr;
+        }
+        else
+        {
+            if(!odd)
+            odd = curr2 = curr;
+            else
+            curr2->next = curr, curr2 = curr;
+        }
+        
+        curr = curr->next;
+    }
+    
+    if(even)
+    {
+        head = even, curr1->next = odd;
+        
+        if(odd)
+        curr2->next = nullptr;
+    }
+}
+
+void LinkedList::display(Node *head)
+{
+    Node *curr = head;
+   
+    while(curr)
+    printf("%d ",curr->data), curr = curr->next;
+    
+    printf("\n");
+}
+
+int main()
+{
+    int test; scn(test);
+    
+    while(test--)
+    {
+        scn(n);
+        
+        Node *head = nullptr; LinkedList *obj = new LinkedList();
+        
+        rep(i,0,n)
+        {
+            int val; scn(val);
+          
+            obj->push(head, val);
+        }
+        
+        obj->segregate(head); 
+        obj->display(head);
+        
+        delete(obj); delete(head);
+    }
+}

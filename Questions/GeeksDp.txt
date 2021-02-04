@@ -13,3 +13,14 @@ https://practice.geeksforgeeks.org/problems/shortest-common-supersequence/0
 https://practice.geeksforgeeks.org/problems/longest-palindromic-subsequence/0#
 https://practice.geeksforgeeks.org/problems/form-a-palindrome/0
 https://practice.geeksforgeeks.org/problems/longest-repeating-subsequence/0
+
+
+https://www.geeksforgeeks.org/count-the-number-of-ways-to-divide-n-in-k-groups-incrementally/  ( important ) 
+
+Question : https://practice.geeksforgeeks.org/problems/handshakes1303/1
+Solution : https://massivealgorithms.blogspot.com/2019/12/leetcode-1259-handshakes-that-dont-cross.html
+
+
+
+				Site for top 20 dp questions
+https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/

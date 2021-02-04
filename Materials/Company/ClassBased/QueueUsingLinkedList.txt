@@ -1,0 +1,160 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
+
+int n;
+
+class Node
+{
+    public:
+        Node *next; int data;
+
+        Node(int data)
+        {
+            next = nullptr;
+            this->data = data; 
+        }
+};
+
+class Queue
+{
+    private:
+        Node *front,*rear; int sz;
+
+    public:
+        Queue() : sz(0)
+        {
+            front = rear = nullptr;
+        }
+
+        void push(int);
+        void pop();
+        int frontElement();
+        bool empty();
+        int size();
+        void display();
+};
+
+void Queue::push(int val)
+{
+    Node *curr = new Node(val); sz++;
+
+    if(rear == nullptr)
+    rear = front = curr;
+    else
+    rear->next = curr,rear = curr;
+}
+
+void Queue::pop()
+{
+    if(empty())
+    return;
+
+    Node *temp = front;
+
+    front = front->next; sz--;
+
+    if(empty())
+    rear = nullptr;
+
+    delete(temp);
+}
+
+int Queue::frontElement()
+{
+    if(empty())
+    return -1;
+
+    return front->data;
+}
+
+bool Queue::empty()
+{
+    return (front == nullptr);
+}
+
+int Queue::size()
+{
+    return sz;
+}
+
+void Queue::display()
+{
+    if(empty())
+    return;
+
+    Node *curr = front;
+
+    while(curr != nullptr)
+    printf("%d ",curr->data),curr=curr->next;
+
+    printf("\n");
+}
+
+int main()
+{
+	scn(t);
+
+    while(t--)
+    {
+        Queue *q1 = new Queue();
+
+        bool flag = true;
+
+        while(flag)
+        {
+            int type; scn(type);
+
+            switch(type)
+            {
+                case 1:
+                { 
+                    int val; scn(val);
+
+                    q1->push(val);
+
+                    break;
+                }
+
+                case 2:
+                {
+                    int top = q1->frontElement(); q1->pop();
+
+                    print(top);
+
+                    break;
+                }
+
+                case 3:
+                {
+                    q1->display(); print(q1->size());
+
+                    break;
+                }
+
+                default:
+                    flag = false;
+            }
+        }
+    }
+}

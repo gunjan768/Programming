@@ -11,17 +11,57 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
+#define inf          INT_MAX
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
-int n;
+int n, prime[N];
+vector<int> v1;
+
+// void sieve()
+// {
+//     for(int i=2;i<N;i++)
+//     prime[i] = 1;
+
+//     for(int i=2;i*i<N;i++)
+//     if(prime[i] == 1)
+//     {
+//         for(int j=i*i;j<N;j+=i)
+//         prime[j] = 0;
+//     }
+// }
+
+void sieve()
+{
+    for(int i=2;i*i<N;i++)
+    if(prime[i] == 0)
+    {
+        for(int j=i*i;j<N;j+=i)
+        prime[j] = i;
+    }
+}
+ 
+void primeFactor(int val)
+{
+    while(val>1)
+    {
+        int fc = prime[val];
+
+        if(fc == 0)
+        fc = val;
+
+        while(val%fc == 0)
+        val /= fc;
+
+        v1.pb(fc);
+    }
+}
 
 int main()
 {
@@ -29,6 +69,6 @@ int main()
 
     while(test--)
     {
-        
+
     }
-}
+}  

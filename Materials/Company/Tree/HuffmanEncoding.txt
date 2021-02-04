@@ -1,0 +1,96 @@
+#include<bits/stdc++.h>
+using namespace std; 
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t,n;
+
+class Tree
+{
+    public:
+        char data; int freq; 
+        Tree *left,*right;
+        
+        Tree(char data,int freq) : data(data), freq(freq)
+        {
+            left=right=nullptr;
+        }
+};
+
+class Comparator
+{
+    public:
+        bool operator() (Tree *a,Tree *b)
+        {
+            return a->freq > b->freq;
+        }
+};
+
+Tree* build(string &s1,int freq[])
+{
+    priority_queue<Tree*, vector<Tree*>, Comparator> pq1;
+    
+    for(int i=0;i<n;i++)
+    pq1.push(new Tree(s1[i],freq[i]));
+    
+    while(pq1.size()>1)
+    {
+        Tree *left = pq1.top(); pq1.pop();
+        Tree *right = pq1.top(); pq1.pop();
+        
+        Tree *curr = new Tree('$',left->freq+right->freq);
+        
+        curr->left = left; curr->right = right;
+        
+        pq1.push(curr);
+    }
+    
+    return pq1.top();
+}
+
+void dfs(Tree *root,string s1="")
+{
+    if(!root)
+    return;
+    
+    if(!root->left && !root->right)
+    cout<<s1<<" ";
+    
+    dfs(root->left,s1+'0');
+    dfs(root->right,s1+'1');
+}
+
+int main()
+{
+    scn(t);
+
+    while(t--)
+    {
+        string s1; cin>>s1;
+        
+        n=(int)s1.size();
+        
+        int freq[n];
+        
+        rep(i,0,n)
+        scn(freq[i]);
+        
+        Tree *root = build(s1,freq);
+        
+        dfs(root);
+        
+        cout<<endl;
+    }
+}

@@ -11,17 +11,38 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
-const int mod = 1e9+7;
-const int N = 5e5+5;
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=2e6+5;
 
-int n;
+int n,m,par[N],a[N],k;
+
+int find(int u)
+{
+    if(par[u] <= -1)
+    return u;
+
+    return par[u] = find(par[u]);
+}
+
+void merge(int u,int v)
+{
+    int ui = find(u), vi = find(v);
+  
+    if(ui == vi)
+    return;
+
+    if(par[ui] <= par[vi])
+    par[ui] += par[vi], par[vi] = ui;
+    else
+    par[vi] += par[ui], par[ui] = vi;
+}
 
 int main()
 {

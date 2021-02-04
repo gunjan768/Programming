@@ -11,24 +11,57 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
-const int mod = 1e9+7;
-const int N = 5e5+5;
+#define inf          INT_MAX
+const int mod=1e9+7;
+const int N=5e5+5;
+int t;
 
-int n;
+int n,a[N];
+
+int partition(int l,int r)
+{
+    int i=l;
+
+    for(int j=l;j<r;j++)
+    if(a[j]<=a[r])
+    swap(a[i++],a[j]);
+    
+    swap(a[i],a[r]);
+
+    return i;
+}
+
+void quickSort(int l,int r)
+{
+    if(l>=r)
+    return;
+
+    int mid = partition(l,r);
+
+    quickSort(l,mid-1);
+    quickSort(mid+1,r);
+}
 
 int main()
 {
-    int test; scn(test);
+    scn(t);
 
-    while(test--)
+    while(t--)
     {
-        
+        scn(n);
+
+        for(int i=0;i<n;i++)
+        scn(a[i]);
+
+        quickSort(0,n-1);
+
+        for(int i=0;i<n;i++)
+        cout<<a[i]<<" \n"[i==n-1];
     }
 }

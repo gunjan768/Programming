@@ -1,0 +1,38 @@
+					Graphs
+
+1. https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/practice-problems/algorithm/mancunian-goes-to-the-derby/
+    Name:  Mancunian Goes To The Derby
+2. https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/practice-problems/algorithm/monk-and-hops/
+3. https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/studious-amit-and-his-new-college/
+4. https://codeforces.com/contest/702/problem/E ( binary lifting )
+5. https://codeforces.com/contest/1337/problem/C  ( nice problem ) 
+6. https://codeforces.com/contest/1339/problem/D ( must try ... see editorial )
+7. https://codeforces.com/contest/1281/problem/E
+8. https://codeforces.com/contest/459/problem/D
+9. https://codeforces.com/contest/533/problem/B
+10. https://codeforces.com/contest/1364/problem/D ( nice one )
+
+https://codeforces.com/contest/1060/problem/E  (Good one)
+
+
+
+https://codeforces.com/contest/938/problem/D  ( multi source dijkstra )
+https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/practice-problems/algorithm/gcd-on-directed-graph-1122228a/
+
+
+					Centroid Decomposition
+
+1. https://codeforces.com/contest/321/problem/C
+2. https://codeforces.com/contest/342/problem/E
+3. https://www.codechef.com/problems/PRIMEDST
+4. https://www.spoj.com/problems/QTREE5/
+
+
+					DSU ON TREES
+
+1. https://codeforces.com/contest/600/problem/E
+2. https://vjudge.net/problem/SGU-507#author=0
+3. https://codeforces.com/contest/570/problem/D
+4. https://www.hackerearth.com/practice/algorithms/graphs/depth-first-search/practice-problems/algorithm/the-grass-type/
+5. https://codeforces.com/contest/208/problem/E ( important )
+6. https://codeforces.com/contest/246/problem/E

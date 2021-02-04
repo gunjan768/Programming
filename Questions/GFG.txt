@@ -12,9 +12,22 @@ https://leetcode.com/problems/construct-binary-search-tree-from-preorder-travers
 https://leetcode.com/problems/next-permutation/
 https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1  ( must )
 https://practice.geeksforgeeks.org/problems/heap-sort/1
+https://practice.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1
+https://practice.geeksforgeeks.org/problems/maximum-index-1587115620/1  ( imp )
+https://practice.geeksforgeeks.org/problems/count-total-set-bits-1587115620/1#  ( Count set bits from 1 to N in log(n) )
+https://practice.geeksforgeeks.org/problems/save-ironman/0  ( palindrome includes all special charaters )
 
 
-				REMOVE ADJACENT VERSIONS
+https://leetcode.com/problems/furthest-building-you-can-reach/submissions/
+https://practice.geeksforgeeks.org/problems/jumping-numbers3805/1#  ( Graph Jumping numbers )
+
+				Strings
 
 https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/submissions/
 https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/submissions/
+https://practice.geeksforgeeks.org/problems/count-occurences-of-anagrams5839/1/?page=1&company[]=Intuit%20&query=page1company[]Intuit
+https://practice.geeksforgeeks.org/problems/karatsuba-algorithm0135/1  ( Karatsuba Algorithm for fast multiplication )
+
+				Linked List
+
+https://practice.geeksforgeeks.org/problems/given-a-linked-list-reverse-alternate-nodes-and-append-at-the-end/1#

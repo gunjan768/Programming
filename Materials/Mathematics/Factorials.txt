@@ -11,17 +11,63 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
+#define inf          INT_MAX
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
-int n;
+int n, fact[3*N], inv[3*N];
+
+int power(int a,int b)
+{
+    int res = 1;
+ 
+    while(b>0)
+    {
+        if(b&1)
+        res = (1LL*res*a)%mod;
+ 
+        a = (1LL*a*a)%mod, b >>= 1;
+    }
+ 
+    return res;
+}
+
+void inverse()
+{
+    inv[2*N-1] = power(fact[2*N-1],mod-2);
+    
+    for(int i=2*N-1;i>0;i--)
+    inv[i-1] = (1LL*i*inv[i])%mod;
+}
+
+void factorial()
+{
+    fact[0] = fact[1] = 1;
+    
+    for(int i=2;i<2*N;i++)
+    fact[i] = (1LL*i*fact[i-1])%mod;
+
+    inverse();
+}
+
+int ncr(int n,int r)
+{
+    if(r>n)
+    return 0;
+    
+    int val = fact[n];
+    
+    val = (1LL*val*inv[r])%mod;
+    val = (1LL*val*inv[n-r])%mod;
+    
+    return val;
+}
 
 int main()
 {
@@ -29,6 +75,6 @@ int main()
 
     while(test--)
     {
-        
+
     }
-}
+} 

@@ -17,41 +17,26 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)1e9
+#define inf          INT_MAX
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
-int n,a[N];
-ll bit[N];
-map<int,int>mp;
+int n, m, indeg[N], vis[N];
+vector<int>v1[N];
 
-void update(int ind,int val)
+void dfs(int node = 1)
 {
-    while(ind<=n)
-    bit[ind]+=val,ind+=ind&(-ind);
+    vis[node] = 1;
+
+    for(auto it:v1[node])
+    if(vis[it] == 0)
+    dfs(it);
 }
 
-ll query(int ind)
+void init()
 {
-    ll sum=0;
-
-    while(ind>0)
-    sum+=bit[ind],ind-=ind&(-ind);
-
-    return sum;
-}
-
-void performMapping()
-{
-    int cnt=1;
-
-    set<int>s1;
-
-    rep(i,0,n)
-    s1.insert(a[i]);
-
-    for(auto it:s1)
-    mp[it]=cnt++;
+    for(int i=0;i<=n;i++)
+    v1[i].clear(), indeg[i] = vis[i] = 0;
 }
 
 int main()
@@ -60,18 +45,37 @@ int main()
 
     while(test--)
     {
-        scn(n);
+        scns(n,m);
 
-        rep(i,0,n)
-        scn(a[i]);
-
-        performMapping();
-
-        ll inversion=0;
-
-        for(int i=n-1;i>=0;i--)
-        inversion+=query(mp[a[i]]-1),update(mp[a[i]],1);
+        init();
         
-        printf("%lld\n",inversion);
+        for(int i=0;i<m;i++)
+        {
+            int u,v; scns(u,v);
+
+            v1[u].pb(v), indeg[v]++;
+        }
+
+        int flag = 1, cnt = 0;
+
+        for(int i=1;i<=n;i++)
+        if(v1[i].size() != indeg[i])
+        flag = 0;
+
+        if(flag == 0)
+        {
+            printf("-1\n");
+
+            continue;
+        }
+
+        for(int i=1;i<=n;i++)
+        if(vis[i] == 0)
+        dfs(i), cnt++;
+
+        if(cnt>1)
+        printf("-1\n");
+        else
+        printf("1\n");
     }
 }

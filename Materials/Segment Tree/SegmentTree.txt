@@ -1,5 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
+// #include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// template <typename T>  using ordered_set =
+// tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define ll           long long
 #define rep(i,j,n)   for(int i=j;i<n;i++)
 #define scn(a)       scanf("%d",&a)
@@ -13,94 +18,69 @@ using namespace std;
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
 #define inf          INT_MAX
-const ll mod=1e9+7;
-const ll N=2e5+5;
-int n,a[N];
-
-vec tree[4*N];
-
-vec merge(vec v1,vec v2)
+const int mod = 1e9+7;
+const int N = 5e5+5;
+ 
+int n, a[N], tree[4*N];
+ 
+void build(int st,int end,int node)
 {
-    int sz1=v1.size(),i=0;
-    int sz2=v2.size(),j=0;
-
-    vec v3;
-
-    while(i<sz1 && j<sz2)
+    if(st == end)
     {
-        if(v1[i]<v2[j])
-        v3.pb(v1[i++]);
-        else
-        v3.pb(v2[j++]);
-    }
-
-    while(i<sz1)
-    v3.pb(v1[i++]);
-
-    while(j<sz2)
-    v3.pb(v2[j++]);
-
-    return v3;
-}
-
-int query(int st,int se,int qs,int qe,int val,int node)
-{
-    if(st>qe || se<qs)
-    return 0;
-
-    if(st>=qs && se<=qe)
-    {
-        auto it=lower_bound(all(tree[node]),val);
-        int smallItems=it-tree[node].begin();
-
-        return smallItems;
-    }
-
-    int mid=(st+se)/2;
-
-    int left=query(st,mid,qs,qe,val,2*node);
-    int right=query(mid+1,se,qs,qe,val,2*node+1);
-
-    int res=left+right;
-
-    return res;
-}
-
-void build(int st,int se,int node)
-{
-    if(st==se)
-    {
-        tree[node].pb(a[st]);
-
+        tree[node] = a[st];
+ 
         return;
     }
-
-    int mid=(st+se)/2;
-
+ 
+    int mid = (st+end)/2;
+ 
     build(st,mid,2*node);
-    build(mid+1,se,2*node+1);
-
-    tree[node]=merge(tree[2*node],tree[2*node+1]);
+    build(mid+1,end,2*node+1);
+ 
+    tree[node] = tree[2*node]^tree[2*node+1];
 }
-
+ 
+void update(int st,int end,int ind,int val,int node)
+{
+    if(st == end)
+    {
+        tree[node] ^= val, a[ind] ^= val; 
+        
+        return;
+    }
+    
+    int mid = (st+end)/2;
+    
+    if(ind <= mid)
+    update(st,mid,ind,val,2*node);
+    else
+    update(mid+1,end,ind,val,2*node+1);
+    
+    tree[node] = tree[2*node]^tree[2*node+1];
+}
+ 
+int query(int st,int end,int qs,int qe,int node)
+{
+    if(st>qe || end<qs)
+    return 0;
+ 
+    if(st >= qs && end <= qe)
+    return tree[node];
+ 
+    int mid = (st+end)/2;
+ 
+    int left = query(st,mid,qs,qe,2*node);
+    int right = query(mid+1,end,qs,qe,2*node+1);
+ 
+    return left^right;
+}
+ 
 int main()
 {
-    scn(n);
+    int test; scn(test);
 
-    rep(i,0,n)
-    scn(a[i]);
-
-    build(0,n-1,1);
-
-    ll ans=0;
-
-    rep(i,1,n-1)
+    while(test--)
     {
-        int largeItems=i-query(0,n-1,0,i-1,a[i],1);
-        int smallItems=query(0,n-1,i+1,n-1,a[i],1);
 
-        ans+=1LL*largeItems*smallItems;
     }
-
-    printf("%lld\n",ans);
 }

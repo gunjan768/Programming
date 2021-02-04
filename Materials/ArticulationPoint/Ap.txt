@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod = 1e9+7;
+const int N = 5e5+5;
+ 
+int n,m;
+ 
+int vis[N], ap[N], low[N], dis[N], tim = 1;
+vector<int>v1[N];
+ 
+void dfs(int node,int par)
+{
+    low[node] = dis[node] = tim++, vis[node] = 1;
+    
+    int child = 0;
+    
+    for(auto it:v1[node])
+    if(it != par)
+    {
+        if(vis[it] == 0)
+        {
+            child++, dfs(it,node);
+
+            if(par == -1 && child>1)
+            ap[node] = 1;
+
+            if(par != -1 && low[it] >= dis[node])
+            ap[node] = 1;
+
+            low[node] = min(low[it],low[node]);
+        }
+        else
+        low[node] = min(low[node],dis[it]);
+    }
+}
+ 
+int main()
+{
+	int test; test = 1;
+
+    while(test--)
+    {
+        scns(n,m);
+ 
+        rep(i,0,m)
+        {
+            int u,v; scns(u,v);
+    
+            v1[u].pb(v), v1[v].pb(u);
+        }
+    
+        rep(i,1,n+1)
+        if(vis[i] == 0)
+        dfs(i,-1);
+
+        rep(i,1,n+1)
+        cout<<ap[i]<<endl;
+    }
+}

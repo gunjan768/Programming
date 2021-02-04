@@ -1,0 +1,161 @@
+#include<bits/stdc++.h>
+using namespace std;
+// #include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// template <typename T>  using ordered_set =
+// tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           push_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          INT_MAX
+const int mod = 1e9+7;
+const int N = 5e5+5;
+
+int n, m, u[N], v[N], wt[N], tim, src, des, res;
+int stock[N], vis[N], bridge[N], low[N], dis[N], par[N];
+vec v1[N];
+vector<pairs>tree[N];
+ 
+int find(int u)
+{
+    if(par[u] <= -1)
+    return u;
+    
+    return par[u] = find(par[u]);
+}
+ 
+void merge(int u,int v)
+{
+    int ui = find(ui), vi = find(vi);
+    
+    if(ui == vi)
+    return;
+    
+    if(par[ui] <= par[vi])
+    par[ui] += par[vi], par[vi] = ui;
+    else
+    par[vi] += par[ui], par[ui] = vi;
+}
+ 
+void dfs(int node = 1, int pe = -1)
+{
+    vis[node] = 1, low[node] = dis[node] = tim++;
+  
+    for(auto it:v1[node])
+    if(it != pe)
+    {
+        int x = node^u[it]^v[it];
+        
+        if(vis[x] == 0)
+        dfs(x,it), low[node] = min(low[node],low[x]);
+        else
+        low[node] = min(low[node],dis[x]);
+    }
+    
+    if(pe != -1)
+    {
+        if(low[node] == dis[node])
+        bridge[pe] = 1;
+        else
+        merge(u[pe],v[pe]);
+    }
+}
+ 
+void bridgeTree()
+{
+    rep(i,1,n+1)
+    if(!vis[i])
+    dfs(i,-1);
+ 
+    rep(i,1,m+1)
+    {   
+        if(bridge[i])
+        {
+            int ui = find(u[i]), vi = find(v[i]);
+      
+            tree[ui].pb({vi,wt[i]}), tree[vi].pb({ui,wt[i]});
+        }
+        else
+        {
+            int prnt = find(u[i]);
+            
+            stock[prnt] |= wt[i];
+        }
+    }
+}
+ 
+void dfsTree(int node,int pr,int flip)
+{
+    flip |= stock[node];
+ 
+    if(node == des)
+    res = flip;
+    
+    for(auto it:tree[node])
+    if(it.f != pr)
+    {
+        int now = flip|it.s;
+
+        dfsTree(it.f,node,now);
+    }
+}
+ 
+void oper()
+{
+    src = find(src), des = find(des);
+ 
+    if(src == des)
+    {
+        res = stock[src];
+        
+        return;
+    }
+    
+    dfsTree(src,-1,0);
+}
+
+void init()
+{
+    rep(i,0,n+1)
+    {
+        v1[i].clear(), par[i] = -1;
+
+        vis[i] = low[i] = dis[i] = bridge[i] = stock[i] = 0;
+    }
+}
+
+int main()
+{
+    int test; scn(test);
+
+    while(test--)
+    {
+        scns(n,m);
+
+        init();  
+        
+        rep(i,1,m+1)
+        {
+            scns(u[i],v[i]), scn(wt[i]);
+        
+            v1[u[i]].pb(i), v1[v[i]].pb(i);
+        }
+        
+        scns(src,des), bridgeTree(), oper();
+        
+        if(res)
+        printf("YES\n");
+        else
+        printf("NO\n");
+    }
+}

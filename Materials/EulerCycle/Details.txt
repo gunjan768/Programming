@@ -1,0 +1,8 @@
+Eulerian Path is a path in graph that visits every edge exactly once. Eulerian Circuit is an Eulerian Path which starts and ends on the same vertex.
+
+A graph is said to be eulerian if it has a eulerian cycle. We have discussed eulerian circuit for an undirected graph.
+
+How to check if a directed graph is eulerian?
+A directed graph has an eulerian cycle if following conditions are true (Source: Wiki)
+1) All vertices belong to a single strongly connected component.
+2) In degree is equal to the out degree for every vertex.

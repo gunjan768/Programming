@@ -11,17 +11,35 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define scns(a,b)    scanf("%d %d",&a,&b)
 #define print(a)     printf("%d\n",a)
 #define vec          vector<int>
-#define pb           emplace_back    
+#define pb           push_back    
 #define pairs        pair<int,int>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
 #define mem(a,b)     memset(a,b,sizeof(a))
-#define inf          (int)2e9+7
+#define inf          (int)1e9+7
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
 int n;
+
+int extendEuclid(int a,int b,int &x,int &y)
+{
+    if(a == 0)
+    {
+        x = 0, y=1;
+
+        return b;
+    }
+
+    int x1,y1;
+
+    int gcd = extendEuclid(b%a,a,x1,y1);
+
+    x = 1LL*y1-1LL*(b/a)*x1, y = x1;
+
+    return gcd;
+}
 
 int main()
 {
@@ -29,6 +47,21 @@ int main()
 
     while(test--)
     {
+        int st,k; scn(n); scns(st,k);
+
+        int x,y, gcd = __gcd(n, k); gcd = __gcd(gcd, st);
         
+        k/=gcd, st/=gcd, n/=gcd;
+     
+        extendEuclid(k,n,x,y);
+
+        if((n-st)%__gcd(n, k) > 0)
+        cout<<-1<<endl;
+        else
+        {
+            int ans = 1LL*x*(n-st+n)%n; ans = (ans%n+n)%n;
+
+            cout<<ans<<endl;
+        }
     }
 }

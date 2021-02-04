@@ -21,6 +21,24 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
+template <class F>
+struct y_combinator 
+{
+    F f;
+
+    template <class... Args>
+    decltype(auto) operator()(Args&&... args) const 
+    {
+        return f(std::ref(*this), std::forward<Args>(args)...);
+    }
+};
+
+template <class F>
+y_combinator<std::decay_t<F>> make_y_combinator(F&& f) 
+{
+    return {std::forward<F>(f)};
+}
+
 int n;
 
 int main()
@@ -29,6 +47,9 @@ int main()
 
     while(test--)
     {
-        
+        auto dfs = make_y_combinator([&](auto &&dfs) -> void
+        {
+            
+        });
     }
 }

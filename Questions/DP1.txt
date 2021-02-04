@@ -14,32 +14,17 @@
 14. https://practice.geeksforgeeks.org/problems/cutted-segments/0
 15. https://practice.geeksforgeeks.org/problems/word-break-part-2/0/
 
-Site for top 20 dp questions
-https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
-
-Longest Common Subsequence
-Longest Increasing Subsequence
-Edit Distance
-Minimum Partition
-Ways to Cover a Distance
-Longest Path In Matrix
-Subset Sum Problem
-Optimal Strategy for a Game
-0-1 Knapsack Problem
-Boolean Parenthesization Problem
-Shortest Common Supersequence
-Matrix Chain Multiplication
-Partition problem
-Rod Cutting
-Coin change problem
-Word Break Problem
-Maximal Product when Cutting Rope
-Dice Throw Problem
-Box Stacking
-Egg Dropping Puzzle
-
 
 1. https://codingcompetitions.withgoogle.com/kickstart/round/000000000019ffc7/00000000001d40bb#problem
 2. https://codeforces.com/contest/900/problem/E ( Acha wala hai )
 3. https://www.hackerearth.com/practice/algorithms/dynamic-programming/state-space-reduction/practice-problems/algorithm/unhappy-neighbours-72597b1f/description/?layout=old 
 	( Permutation and Combination ) 
+
+4. https://leetcode.com/problems/number-of-music-playlists/  ( Must )
+5. https://binarysearch.com/room/Weekly-Contest-18-YwMuqjlz8f?questionsetIndex=1   ( K Stacks )
+
+
+https://atcoder.jp/contests/abc185/tasks/abc185_c 	( Total number of possible lengths )
+https://leetcode.com/problems/jump-game/   ( Very basic )
+https://leetcode.com/problems/unique-paths-ii/submissions/  (Unique paths from 1,1 to n,m)
+https://binarysearch.com/problems/Job-Scheduling-to-Minimize-Difficulty
