@@ -1,0 +1,169 @@
+// https://www.hackerearth.com/challenges/competitive/february-circuits-21-2/algorithm/incremental-queries-a7a71194/
+
+#include<bits/stdc++.h>
+using namespace std;
+// #include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// template <typename T>  using ordered_set =
+// tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;++i)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define pb           emplace_back    
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define inf          (int)2e9+7
+const int mod = 1e9+7;
+const int N = 5e5+5;
+
+int n, a[N];
+
+class Type
+{
+    private:
+        int odd, even, mx;
+        ll sum;
+
+    public:
+        Type() {}
+
+        Type(const int &odd,const int &even,const int &mx,const ll &sum) : odd(odd), even(even)
+        {
+            this->mx = mx;
+            this->sum = sum;
+        }
+
+        Type operator+ (Type const &a)
+        {
+            Type val(0,0,0,0);
+
+            val.odd = odd + a.odd;
+            val.even = even + a.even;
+            val.mx = max(mx, a.mx);
+            val.sum = sum + a.sum;
+
+            return val;
+        }
+
+        void cal(const int&);
+        tuple<int,int,int,ll> destructure(void);
+
+} tree[4*N];
+
+class Function
+{
+    public:
+        void build(int,int,int);
+        void update(int,int,int,int,int);
+        Type query(int,int,int,int,int);
+};
+
+void Type::cal(const int &val)
+{
+    sum = mx = val, odd = val % 2, even = !odd;
+}
+
+tuple<int,int,int,ll> Type::destructure()
+{
+    return {odd, even, mx, sum};
+}
+
+void Function::build(int st,int end,int node = 1)
+{
+    if(st == end)
+    {
+        tree[node].cal(a[st]);
+
+        return;
+    }
+
+    int mid = (st+end)/2;
+
+    build(st,mid,2*node), build(mid+1,end,2*node+1);
+
+    tree[node] = tree[2*node] + tree[2*node+1];
+}
+
+void Function::update(int st,int end,int ind,int val,int node = 1)
+{
+    if(st == end)
+    {
+        tree[node].cal(val);
+
+        return;
+    }
+
+    int mid = (st+end)/2;
+
+    if(ind <= mid)
+    update(st,mid,ind,val,2*node);
+    else
+    update(mid+1,end,ind,val,2*node+1);
+
+    tree[node] = tree[2*node] + tree[2*node+1];
+}
+
+Type Function::query(int st,int end,int qs,int qe,int node = 1)
+{
+    if(st>qe || end<qs)
+    {
+        Type val(0,0,0,0);
+
+        return val;
+    }
+
+    if(st >= qs && end <= qe)
+    return tree[node];
+
+    int mid = (st+end)/2;
+
+    Type left = query(st,mid,qs,qe,2*node);
+    Type right = query(mid+1,end,qs,qe,2*node+1);
+
+    return left + right;
+}
+
+int main()
+{
+    int test; test = 1;
+
+    for(int t = 1; t <= test; ++t)
+    {
+        int q; scns(n,q);
+
+        rep(i,1,n+1) scn(a[i]);
+
+        Function *obj = new Function();
+
+        obj->build(1,n,1);
+
+        while(q--)
+        {
+            int type, l, r; scn(type), scns(l,r);
+
+            if(type == 1)
+            obj->update(1,n,l,r,1);
+            else
+            {
+                Type ans = obj->query(1,n,l,r,1);
+
+                auto [odd, even, mx, sum] = ans.destructure();
+
+                int len = r-l+1; ll cnt = 0;
+
+                if(mx & 1)
+                cnt = (1LL*len*mx - sum)/2 + (even+1)/2;
+                else
+                cnt = (1LL*len*mx - sum)/2 + (odd+1)/2;
+
+                printf("%lld\n",cnt);
+            }
+        }
+    }
+
+    return 0;
+}

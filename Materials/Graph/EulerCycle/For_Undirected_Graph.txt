@@ -1,0 +1,45 @@
+void dfs(int node,int &sz, vector<int> v1[],int *vis)
+{
+    ++sz, vis[node] = 1;
+    
+    for(const auto &it:v1[node])
+    if(vis[it] == 0)
+    dfs(it,sz,v1,vis);
+}
+
+class Solution 
+{
+    public:
+    	int isEularCircuit(int n, vector<int> v1[])
+    	{
+    	    int *vis = new int[n+1], cnt = 0;
+    	    
+    	    for(int i = 0; i<n; ++i)
+    	    if(vis[i] == 0)
+    	    {
+    	        int sz = 0;
+    	        
+    	        dfs(i,sz,v1,vis), ++cnt;
+    	        
+    	        if(cnt >= 2 && sz >= 2)
+    	        return 0;
+    	    }
+    	    
+    	    int odd = 0;
+    	    
+    	    for(int i = 0; i<n; ++i)
+    	    if(v1[i].size() % 2 == 1)
+    	    ++odd;
+    	    
+    	    // Both Cycle && Path are present
+    	    if(odd == 0)
+    	    return 2;
+    	    
+    	    // Only Path is present 
+    	    if(odd == 2)
+    	    return 1;
+    	    
+    	    // None is present
+    	    return 0;
+    	}
+};

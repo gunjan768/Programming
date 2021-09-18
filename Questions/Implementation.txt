@@ -12,8 +12,15 @@
 https://practice.geeksforgeeks.org/problems/trapping-rain-water/0/
 https://practice.geeksforgeeks.org/problems/sorted-subsequence-of-size-3/1#
 
+Hashing 
 
-						Binary Search
+https://practice.geeksforgeeks.org/problems/subarray-with-given-sum-1587115621/1#  (positive elements only, sum = k)
 
-https://codingcompetitions.withgoogle.com/kickstart/round/00000000001a0069/0000000000414a24
-https://www.codechef.com/problems/MEXSUB  (MEX)
+https://leetcode.com/problems/longest-well-performing-interval/		(positive sum where elements can be either 1 or -1)
+
+https://www.hackerearth.com/practice/algorithms/searching/binary-search/practice-problems/algorithm/mehta-and-subarrays/
+(elements can be any integer)
+
+Meet in the middle
+
+https://www.hackerearth.com/practice/algorithms/searching/binary-search/practice-problems/algorithm/zero-xor-e3085486/

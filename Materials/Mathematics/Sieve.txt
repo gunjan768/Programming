@@ -22,7 +22,7 @@ const int mod = 1e9+7;
 const int N = 5e5+5;
 
 int n, prime[N];
-vector<int> v1;
+vector<int> v;
 
 // void sieve()
 // {
@@ -39,29 +39,28 @@ vector<int> v1;
 
 void sieve()
 {
-    for(int i=2;i*i<N;i++)
-    if(prime[i] == 0)
-    {
-        for(int j=i*i;j<N;j+=i)
-        prime[j] = i;
-    }
+	for(int i = 1; i < N; ++i) prime[i] = i;
+
+	for(int i = 2; i*i < N; ++i)
+	if(prime[i] == i)
+	{
+		for(int j = i*i; j<N; j += i) 
+		prime[j] = i;
+	}
 }
- 
-void primeFactor(int val)
+
+void PF()
 {
-    while(val>1)
-    {
-        int fc = prime[val];
+	while(val > 1)
+	{
+		int fc = prime[val];
 
-        if(fc == 0)
-        fc = val;
+		while(val%fc == 0) val /= fc;
 
-        while(val%fc == 0)
-        val /= fc;
-
-        v1.pb(fc);
-    }
+		v.pb(fc);
+	}
 }
+
 
 int main()
 {

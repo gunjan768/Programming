@@ -18,25 +18,23 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
-template <class F>
-struct y_combinator 
-{
-    F f;
+int n, *p;
 
-    template <class... Args>
-    decltype(auto) operator()(Args&&... args) const 
-    {
-        return f(std::ref(*this), std::forward<Args>(args)...);
-    }
-};
-
-template <class F>
-y_combinator<std::decay_t<F>> make_y_combinator(F&& f) 
+// This proves that you have to delete the pointer variable using delete keyword. Lifetime of pointer
+// variable is through out the program.
+void f()
 {
-    return {std::forward<F>(f)};
+    int x = 10;
+
+    int *q = &x; p = q;
+
+    // Everytime you run a program, q gets allocated a new memory space.
+    cout<<q<<" "<<*q<<endl;
+
+    // If you perform a delete statement then you will face runtime error as q is assigned to the global
+    // pointer p i.e. pointer p is pointing to the same adddress location to that of q.
+    // delete q;
 }
-
-int n;
 
 int main()
 {
@@ -44,15 +42,9 @@ int main()
 
     for(int t = 1; t <= test; ++t)
     {
-        auto dfs = make_y_combinator([&](auto &&dfs) -> void
-        {
-            
-        });
+        f();
 
-        const function<ll(int,int,int)> rec = [&](int i,int l,int sum) -> ll
-        {
-            
-        };
+        cout<<"Main "<<*p<<endl;
     }
 
     return 0;

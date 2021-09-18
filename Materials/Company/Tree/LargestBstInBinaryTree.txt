@@ -20,7 +20,6 @@ Bst dfs(Node *root)
     Bst left = dfs(root->left);
     Bst right = dfs(root->right);
     
-    
     if(left.isBst && right.isBst)
     {
         if(root->data>left.mx && root->data<right.mn)

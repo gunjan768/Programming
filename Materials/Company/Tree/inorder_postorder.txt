@@ -1,33 +1,30 @@
-Node* build(int st,int end,int *in,int *post,unordered_map<int,int> &pos,int &ind)
+Node* build(int st,int end,int *in,int *post,unordered_map<int,int> &mp,int &ind)
 {
-    if(st>end)
+    if(st > end)
     return nullptr;
     
     int data = post[ind--];
     
-    Node *node = new Node(data);
+    Node *curr = new Node(data);
+
+    int mid = mp[data];
     
-    if(st==end)
-    return node;
+    curr->right = build(mid+1,end,in,post,mp,ind);
+    curr->left = build(st,mid-1,in,post,mp,ind);
     
-    int mid=pos[data];
-    
-    node->right=build(mid+1,end,in,post,pos,ind);
-    node->left=build(st,mid-1,in,post,pos,ind);
-    
-    return node;
+    return curr;
 }
 
 Node *buildTree(int in[], int post[], int n) 
 {
-    unordered_map<int,int>pos;
+    unordered_map<int,int>mp;
     
     for(int i=0;i<n;i++)
-    pos[in[i]]=i;
+    mp[in[i]] = i;
     
-    int start=n-1;
+    int ind = n-1;
     
-    Node *root=build(0,n-1,in,post,pos,start);
+    Node *root=build(0,n-1,in,post,mp,ind);
     
     return root;
 }

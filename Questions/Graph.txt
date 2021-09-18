@@ -13,6 +13,9 @@
 10. https://codeforces.com/contest/1364/problem/D ( nice one )
 
 https://codeforces.com/contest/1060/problem/E  (Good one)
+https://codeforces.com/contest/1485/problem/E  (Graph + DP + Medium)
+https://codeforces.com/contest/1029/problem/E
+https://codeforces.com/contest/1486/problem/E  (3 state Dijkstra)
 
 
 

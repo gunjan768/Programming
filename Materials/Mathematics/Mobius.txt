@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;++i)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define pb           emplace_back    
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define inf          (int)2e9+7
+const int mod = 1e9+7;
+const int N = 1e6+5;
+
+// Mobius only work when : A[i] <= 1e6
+// lpf[i] -> stores least prime factor for number i
+// mbs[i] -> stores the value of mobius function for number i
+
+int n, a[N], b[N], lpf[N], mbs[N], freq[N];
+
+int main()
+{
+    int test; test = 1;
+
+    while(test--)
+    {
+        scn(n);
+
+        for(int i=0; i<n; ++i)
+        scn(a[i]), ++freq[a[i]];
+
+        for(int i=0; i<n; ++i)
+        scn(b[i]);
+
+        auto findLpf = [&]() -> void
+        {
+            for(int i=2; i<N; ++i)
+            if(lpf[i] == 0)
+            {
+                for(int j=i; j<N; j+=i)
+                if(lpf[j] == 0)
+                lpf[j] = i;
+            }
+        };
+
+        auto mobius = [&]() -> void
+        {
+            findLpf(), mbs[1] = 1;
+
+            for(int i=2; i<N; ++i)
+            {
+                if(lpf[i] == lpf[i/lpf[i]])
+                mbs[i] = 0;
+                else
+                mbs[i] = -1*mbs[i/lpf[i]];
+            }
+        };
+
+        // All pairs with gcd = 1
+        auto findPairs = [&]() -> ll
+        {   
+            mobius(); ll ans = 0;
+
+            for(int i=1; i<N; ++i)
+            if(mbs[i] != 0)
+            {
+                ll cnt = 0;
+
+                for(int j=i; j<N; j+=i)
+                cnt += freq[j];
+
+                ans += mbs[i]*cnt*(cnt-1)/2;
+            }
+
+            return ans;
+        };
+
+        ll ans = findPairs();
+
+        printf("%lld\n",ans);
+    }
+}

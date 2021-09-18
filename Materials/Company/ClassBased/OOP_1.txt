@@ -1,0 +1,188 @@
+// https://codeforces.com/contest/1093/problem/G
+
+#include<bits/stdc++.h>
+using namespace std;
+// #include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// template <typename T>  using ordered_set =
+// tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;++i)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define pb           emplace_back    
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define inf          2e9+7
+const int mod = 1e9+7;
+const int N = 2e5+5, M = 35;
+ 
+int n, m, a[N][M], k, lim;
+
+class Tree
+{
+    public:
+        int mn, mx;
+
+        Tree() {}
+        
+        inline Tree(const int &mn, const int &mx): mn(mn)
+        {
+            this->mx = mx;
+        }
+
+        inline Tree(const int &cast)
+        {
+            mn = mx = cast;
+        }
+
+        inline Tree operator+ (const Tree&);
+
+} tree[4*N][M];
+
+class Function
+{
+    private:
+        void bitMasking(const int*, const int&) const;
+
+    public:
+        void build(const int&, const int&, const int&) const;
+        void update(const int&, const int&, const int&, const int*, const int&) const;
+        Tree query(const int&, const int&, const int&, const int&, const int&, const int&) const;
+};
+
+inline Tree Tree::operator+ (const Tree &a)
+{
+    Tree temp = Tree(0, 0);
+
+    temp.mn = min(mn, a.mn);
+    temp.mx = max(mx, a.mx);
+
+    return temp;
+}
+
+void Function::bitMasking(const int *arr, const int &node) const
+{
+    for(int i = 0; i<lim; ++i)
+    {
+        int val = 0;
+
+        for(int j = 0; j<k; ++j)
+        {
+            if(i & (1 << j))
+            val += arr[j];
+            else
+            val -= arr[j];
+        }
+
+        tree[node][i] = val;  // tree[node][i].Tree(val);
+    }
+}
+
+void Function::build(const int &st, const int &end, const int &node) const
+{
+    if(st == end)
+    {
+        bitMasking(a[st], node);
+
+        return;
+    }
+
+    int mid = (st + end) >> 1;
+
+    build(st, mid, 2*node);
+    build(mid+1, end, 2*node+1);
+
+    for(int i = 0; i<lim ; ++i)
+    tree[node][i] = tree[2*node][i] + tree[2*node+1][i];
+}
+
+void Function::update(const int &st, const int &end, const int &ind, const int val[], const int &node) const
+{
+    if(st == end)
+    {
+        bitMasking(val, node);
+        
+        return;
+    }
+    
+    int mid = (st + end) >> 1;
+    
+    if(ind <= mid)
+    update(st, mid, ind, val, 2*node);
+    else
+    update(mid+1, end, ind, val, 2*node+1);
+    
+    for(int i = 0; i<lim ; ++i)
+    tree[node][i] = tree[2*node][i] + tree[2*node+1][i];
+}
+ 
+Tree Function::query(const int &st, const int &end, const int &qs, const int &qe, const int &mask, const int &node) const
+{
+    if(st > qe || end < qs) return Tree(inf, -inf);
+ 
+    if(st >= qs && end <= qe) return tree[node][mask];
+ 
+    int mid = (st + end) >> 1;
+ 
+    Tree left = query(st, mid, qs, qe, mask, 2*node);
+    Tree right = query(mid+1, end, qs, qe, mask, 2*node+1);
+    
+    Tree temp = left + right;
+
+    return temp;
+}
+ 
+int main()
+{
+    int test; test = 1;
+
+    for(int tt = 1; tt <= test; ++tt)
+    {
+        scns(n, k);
+
+        for(int i = 0; i<n; ++i)
+        for(int j = 0; j<k; ++j) 
+        scn(a[i][j]);
+
+        lim = (1 << k);
+
+        Function *obj = new Function();
+
+        obj->build(0, n-1, 1);
+    
+        int q; scn(q);
+
+        while(q--)
+        {
+            int type; scn(type);
+
+            if(type == 1)
+            {
+                int ind, val[k]; scn(ind);
+
+                for(int i = 0; i<k; ++i) scn(val[i]);
+
+                obj->update(0, n-1, ind-1, val, 1);
+            }
+            else
+            {
+                int l, r, ans = 0; scns(l, r);
+                
+                for(int i = 0; i<lim; ++i)
+                {
+                    Tree temp = obj->query(0, n-1, l-1, r-1, i, 1);
+
+                    ans = max(ans, temp.mx - temp.mn);
+                }
+
+                print(ans);
+            }
+        }
+    }
+
+    return 0;
+}

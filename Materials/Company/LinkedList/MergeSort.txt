@@ -9,6 +9,16 @@
  * };
  */
 
+void partition(ListNode *head, ListNode *&left, ListNode *&right)
+{
+	ListNode *fast = head->next, *slow = head;
+
+	while(fast && fast->next)
+	slow = slow->next, fast = fast->next->next;
+
+	left = head, right = slow->next, slow->next = NULL;
+}
+
 ListNode* mergeList(ListNode *left, ListNode *right)
 {
 	if(!left)
@@ -25,33 +35,34 @@ ListNode* mergeList(ListNode *left, ListNode *right)
 	}
 	else
 	{
-    	right->next = mergeList(left, right->next);
+   		right->next = mergeList(left, right->next);
     
     	return right;
 	}
 }
 
+void mergeSort(ListNode *&head)
+{
+	if(!head || !head->next)
+	return;
+
+	ListNode *left, *right;
+
+	partition(head, left, right);
+
+	mergeSort(left);
+	mergeSort(right);
+
+	head = mergeList(left, right);	
+}
+
 class Solution 
 {
     public:
-        ListNode* mergeKLists(vector<ListNode*> &a) 
+        ListNode* sortList(ListNode* head) 
         {
-            int n = (int)a.size(), last = n-1;
+            mergeSort(head);
             
-            if(n == 0) return NULL;
-            
-            while(last > 0)
-            {
-                int i = 0, j = last;
-
-                while(i<j)
-                {
-                    a[i] = mergeList(a[i],a[j]), ++i, --j;
-
-                    if(i >= j) last = j;
-                }
-            }
-
-            return a[0];
+            return head;
         }
 };

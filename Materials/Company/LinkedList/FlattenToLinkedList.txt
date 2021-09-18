@@ -1,28 +1,27 @@
 https://leetcode.com/problems/flatten-binary-tree-to-linked-list/submissions/
 
 
-void dfs(TreeNode *root,TreeNode *&prev)
+void dfs(TreeNode *root, TreeNode *&prev)
 {
-    if(!root)
-    return;
+    if(!root) return;
     
     TreeNode *right = root->right;
     
-    if(prev == nullptr)
-    prev=root;
+    if(prev == NULL)
+    prev = root;
     else
-    prev->right=root,prev->left=nullptr,prev=root;
+    prev->right = root, prev->left = NULL, prev = root;
     
-    dfs(root->left,prev);
-    dfs(right,prev);
+    dfs(root->left, prev);
+    dfs(right, prev);
 }
 
 class Solution {
 public:
     void flatten(TreeNode* root) 
     {
-        TreeNode *prev = nullptr;
+        TreeNode *prev = NULL;
         
-        dfs(root,prev);
+        dfs(root, prev);
     }
 };

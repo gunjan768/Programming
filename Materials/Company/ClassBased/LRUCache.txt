@@ -5,8 +5,8 @@ class LruCache
 {
     private:
         int cap;
-        list<int>dq;
-        unordered_map<int,list<int>::iterator>mp;
+        list<int> dq;
+        unordered_map<int, list<int>::iterator> mp;
 
     public:
         LruCache(int cap)
@@ -34,7 +34,7 @@ void LruCache::add(int val)
         dq.erase(mp[val]);
     }
 
-    dq.push_front(val); mp[val]=dq.begin();
+    dq.push_front(val); mp[val] = dq.begin();
 }
 
 void LruCache::display()

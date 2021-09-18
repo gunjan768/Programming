@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;++i)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define pb           emplace_back    
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define inf          2e9+7
+const int mod = 1e9+7;
+const int N = 2e5+5;
+
+int n, h, x, mp[N], dis[N][3];
+vector<int> v1[N];
+
+int main()
+{
+    int test; test = 1;
+
+    for(int tt = 1; tt <= test; ++tt)
+    {
+        scanf("%d %d %d", &n, &h, &x);
+        
+        [&]() -> void
+        {
+            for(int i = 0; i <= n; ++i)
+            {
+                v1[i].clear(), mp[i] = 0;
+
+                for(int j = 0; j<3; ++j)
+                dis[i][j] = -1;
+            }
+        }();
+
+        for(int i = 1; i <= h; ++i)
+        {
+            int node; scanf("%d", &node);
+
+            mp[node] = 1;
+        }
+
+        for(int i = 1; i<n; ++i)
+        {
+            int u, v; scanf("%d %d", &u, &v);
+
+            v1[u].emplace_back(v), v1[v].emplace_back(u);
+        }
+
+        int last = 1, cnt = 0;
+
+        const auto BFS = [&last](const int &src, const int &i) -> void
+        {
+            dis[src][i] = 0;
+
+            queue<int> q; q.push(src);
+
+            while(!q.empty())
+            {
+                int node = q.front(); q.pop();
+
+                if(mp[node] == 1) last = node;
+
+                for(const auto &it: v1[node])
+                if(dis[it][i] == -1)
+                {
+                    dis[it][i] = dis[node][i] + 1;
+
+                    q.push(it);
+                }
+            }
+        };
+
+        for(int i = 0; i<3; ++i) BFS(last, i);
+
+        for(int i = 1; i <= n; ++i)
+        if(dis[i][1] <= x && dis[i][2] <= x)
+        ++cnt;
+
+        printf("%d\n", cnt);
+    }
+
+    return 0;
+}

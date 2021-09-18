@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;++i)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define pb           emplace_back    
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define inf          (int)2e9+7
+const int mod = 1e9+7;
+const int N = 5e5+5;
+
+int n, sub[N];
+ll sum, ans[N];
+vector<pair<int,int>> v1[N];
+
+void dfs(int node = 1,int par = 1)
+{
+	sub[node] = 1;
+
+	for(auto [it, wt]:v1[node])
+	if(it != par)
+	{
+		dfs(it, node);
+
+		sum += 1LL*sub[it]*wt, sub[node] += sub[it];
+	}
+}
+
+void rerooting(int node = 1,int par = 1)
+{
+	ans[node] = sum;
+	
+	for(auto [it, wt]:v1[node])
+	if(it != par)
+	{
+		sub[node] -= sub[it], sum -= 1LL*wt*sub[it];
+		sum += 1LL*wt*sub[node], sub[it] += sub[node];
+
+		rerooting(it, node);
+
+		sub[it] -= sub[node], sum -= 1LL*wt*sub[node];
+		sum += 1LL*wt*sub[it], sub[node] += sub[it];
+	}
+}
+
+int main()
+{
+	int test; test = 1;
+
+	for(int t = 1; t <= test; ++t)
+	{
+		scn(n);
+
+		rep(i,1,n)
+		{
+			int u,v,wt; scns(u,v), scn(wt);
+
+			v1[u].pb(v, wt), v1[v].pb(u, wt);
+		}
+
+		dfs(1,1), rerooting(1,1);
+
+		rep(i,1,n+1)
+		printf("%lld ",ans[i]);
+
+		puts("");
+	}
+
+	return 0;
+}

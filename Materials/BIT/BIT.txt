@@ -27,31 +27,29 @@ map<int,int>mp;
 
 void update(int ind,int val)
 {
-    while(ind<=n)
-    bit[ind]+=val,ind+=ind&(-ind);
+    while(ind <= n)
+    bit[ind] += val, ind += ind & (-ind);
 }
 
-ll query(int ind)
+int query(int ind)
 {
-    ll sum=0;
+    int sum = 0;
 
-    while(ind>0)
-    sum+=bit[ind],ind-=ind&(-ind);
+    while(ind > 0)
+    sum += bit[ind], ind -= ind & (-ind);
 
     return sum;
 }
 
 void performMapping()
 {
-    int cnt=1;
+    int c = 0;
 
     set<int>s1;
 
-    rep(i,0,n)
-    s1.insert(a[i]);
+    for(int i = 0; i<n; ++i) s1.insert(a[i]);
 
-    for(auto it:s1)
-    mp[it]=cnt++;
+    for(const auto &it:s1) mp[it] = ++c;
 }
 
 int main()

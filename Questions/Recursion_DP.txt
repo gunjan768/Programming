@@ -2,3 +2,4 @@ https://codeforces.com/contest/440/problem/C
 
 
 https://leetcode.com/problems/2-keys-keyboard/
+https://practice.geeksforgeeks.org/problems/gray-code-1611215248/1/

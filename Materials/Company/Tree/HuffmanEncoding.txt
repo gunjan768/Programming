@@ -21,18 +21,18 @@ class Tree
 {
     public:
         char data; int freq; 
-        Tree *left,*right;
+        Tree *left, *right;
         
-        Tree(char data,int freq) : data(data), freq(freq)
+        Tree(char data, int freq) : data(data), freq(freq)
         {
-            left=right=nullptr;
+            left = right = nullptr;
         }
 };
 
 class Comparator
 {
     public:
-        bool operator() (Tree *a,Tree *b)
+        bool operator() (Tree *a, Tree *b)
         {
             return a->freq > b->freq;
         }
@@ -45,12 +45,12 @@ Tree* build(string &s1,int freq[])
     for(int i=0;i<n;i++)
     pq1.push(new Tree(s1[i],freq[i]));
     
-    while(pq1.size()>1)
+    while((int)pq1.size() > 1)
     {
         Tree *left = pq1.top(); pq1.pop();
         Tree *right = pq1.top(); pq1.pop();
         
-        Tree *curr = new Tree('$',left->freq+right->freq);
+        Tree *curr = new Tree('$', left->freq + right->freq);
         
         curr->left = left; curr->right = right;
         

@@ -20,6 +20,8 @@ https://www.geeksforgeeks.org/count-the-number-of-ways-to-divide-n-in-k-groups-i
 Question : https://practice.geeksforgeeks.org/problems/handshakes1303/1
 Solution : https://massivealgorithms.blogspot.com/2019/12/leetcode-1259-handshakes-that-dont-cross.html
 
+https://practice.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1#  (Unbounded knapsack)
+
 
 
 				Site for top 20 dp questions

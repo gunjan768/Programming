@@ -17,8 +17,8 @@ const int mod=1e9+7;
 const int N=5e5+5;
 int t;
 
-int n;      // eg : 56124 --> prev permi ---> 54126
-
+int n;      // eg : 56124 --> prev permi ---> 54621
+		
 int main()
 {
     scn(t);

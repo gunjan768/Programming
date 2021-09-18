@@ -1,0 +1,102 @@
+class Bike {
+
+    // Both in parent and child (function name is same) but differ in arguments  
+    void run(int a) {
+        System.out.println("Parent Class run");
+    }  
+
+    // Overriding
+    void run1(int a) {
+        System.out.println("Parent Class run1");
+    }
+
+    // Only in parent
+    void run2() {
+        System.out.println("Parent Class run2 only present in parent");
+    }   
+}  
+
+class Splendor extends Bike {  
+
+    // Both in parent and child (function name is same) but differ in arguments
+    void run() {
+        System.out.println("Child Class");
+    }  
+    
+    // Overriding
+    void run1(int a) {
+        System.out.println("Child Class run1");
+    }  
+
+    // Only is child
+    void run3(int a) {
+        System.out.println("Child Class run3 only present in child");
+    }  
+
+    public static void main(String args[]) {
+
+        // *******************************************************************************************
+        
+        // If reference variable and object is both of child type, then 
+        Splendor b = new Splendor(); 
+
+        // 1) Calling overriding method will invoke the version of child class (remember that here 
+        // dynamic poylmorphism will not happen as reference variable is not of parent class) as
+        // it will serach first in child class (will get there only) then in parent class
+        b.run1(10); 
+
+        // 2) Calling the method which is only present in parent will call the version of parent class
+        // as it will serach first in child class (will not find there) then in parent class
+        b.run2();
+
+        // 3) Calling the method which is only present in child will call the version of child class
+        // as it will serach first in child class (will get there only) then in parent class 
+        b.run3(20);
+
+        // 4) Calling function having same name but differs in arguments :
+
+        // a) Calling method that have no argument (of parent class) will invoke parent version as it 
+        // will serach first in child class (will not get there only) then will search in the parent
+        // class (will get there).
+            b.run(10);
+
+        // b) Calling method with argument (of child class) will invoke child version as it 
+        // will serach first in child class and there it will get there.
+            b.run();
+
+        // *******************************************************************************************
+
+
+        // *******************************************************************************************
+
+        System.out.println("***************************************************************");
+
+        // If reference variable is of parent class and object is of child type. Will only search in 
+        // the parent class as reference variable is of parent type only except for method overiding.
+        Bike b1 = new Splendor();
+
+        // 1) Calling overriding method will invoke the version of child class and this is called
+        // dynamic polymorphism.
+        System.out.print("Dynamic Polymorphism : "); b1.run1(10); 
+
+        // 2) Calling the method which is only present in parent will call the version of parent class
+        // as it will only search in the parent class and there it will get the function
+        b1.run2();
+
+        // 3) Calling the method which is only present in child class. It will only search in the 
+        // parent class and there it will not get the function. It will show an error.
+        // b1.run3(20); // Error
+
+        // 4) Calling function having same name but differs in arguments :
+
+        // a) Calling method that have no argument (of parent class) will invoke parent version as it 
+        // will serach only in the parent class and it will get there
+            b1.run(10);
+
+        // b) Calling method with argument (of child class) will show an error as it will serach only
+        // in the parent class and it will not get there.
+            // b1.run(); // error
+
+        // *******************************************************************************************
+    }  
+}

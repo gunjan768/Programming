@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template <typename T>  using ordered_set =
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#define ll           long long
+#define rep(i,j,n)   for(int i=j;i<n;i++)
+#define scn(a)       scanf("%d",&a)
+#define scns(a,b)    scanf("%d %d",&a,&b)
+#define print(a)     printf("%d\n",a)
+#define vec          vector<int>
+#define pb           emplace_back    
+#define pairs        pair<int,int>
+#define f            first
+#define s            second
+#define all(v)       v.begin(),v.end()
+#define mem(a,b)     memset(a,b,sizeof(a))
+#define inf          (int)2e9+7
+const int mod = 1e9+7;
+const int N = 5e5+5;
+
+int n, dis[N];
+vector<pair<int,int>> v1[N];
+
+int main()
+{
+    int test; scn(test);
+
+    while(test--)
+    {
+        int m; scns(n,m);
+
+        [&]()
+        {
+            rep(i,0,n+1)
+            v1[i].clear(), dis[i] = 0;
+
+        }();
+
+        rep(i,0,m)
+        {
+            int u,v,wt; scns(u,v); scn(wt);
+
+            v1[u].pb(v,wt), v1[v].pb(u,wt);
+        }
+
+        auto dijkstra = [&](int src)
+        {
+            rep(i,0,n+1)
+            dis[i] = inf;
+        
+            dis[src] = 0;
+        
+            set<pair<int,int>>ms; ms.emplace(0, src);
+        
+            while(ms.size()>0)
+            {
+                auto [_, u] = *ms.begin(); ms.erase(ms.begin());
+        
+                for(auto [v, wt]:v1[u])
+                if(dis[v] > dis[u]+wt)
+                {
+                    if(dis[v] != inf)
+                    ms.erase({dis[v],v});
+
+                    dis[v] = dis[u] + wt, ms.emplace(dis[v],v);
+                }
+            }
+        };
+
+        int src; scn(src); dijkstra(src);
+    }
+
+    return 0;
+}

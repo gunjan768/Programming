@@ -6,20 +6,17 @@ using namespace __gnu_pbds;
 template <typename T>  using ordered_set =
 tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define ll           long long
-#define rep(i,j,n)   for(ll i=j;i<n;i++)
+#define rep(i,j,n)   for(ll i=j;i<n;++i)
 #define scn(a)       scanf("%lld",&a)
 #define scns(a,b)    scanf("%lld %lld",&a,&b)
 #define print(a)     printf("%lld\n",a)
-#define vec          vector<ll>
 #define pb           emplace_back    
-#define pairs        pair<ll,ll>
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
-#define mem(a,b)     memset(a,b,sizeof(a))
 #define inf          INT_MAX
-const ll mod=1e9+7;
-const ll N=5e5+5;
+const ll mod = 1e9+7;
+const ll N = 5e5+5;
 
 ll n;
 
@@ -27,7 +24,7 @@ int main()
 {
     ll test; scn(test);
 
-    while(test--)
+    for(ll t = 1; t <= test; ++t)
     {
 
     }

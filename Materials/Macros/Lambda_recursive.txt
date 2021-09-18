@@ -14,27 +14,9 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
-#define inf          (int)2e9+7
+#define inf          2e15+7
 const int mod = 1e9+7;
-const int N = 5e5+5;
-
-template <class F>
-struct y_combinator 
-{
-    F f;
-
-    template <class... Args>
-    decltype(auto) operator()(Args&&... args) const 
-    {
-        return f(std::ref(*this), std::forward<Args>(args)...);
-    }
-};
-
-template <class F>
-y_combinator<std::decay_t<F>> make_y_combinator(F&& f) 
-{
-    return {std::forward<F>(f)};
-}
+const int N = 1e5+5;
 
 int n;
 
@@ -42,17 +24,42 @@ int main()
 {
     int test; scn(test);
 
-    for(int t = 1; t <= test; ++t)
+    rep(t,1,test+1)
     {
-        auto dfs = make_y_combinator([&](auto &&dfs) -> void
-        {
-            
-        });
+        int l,sum; scns(l,sum);
+        
+        int total = (52*53)/2;  // total = 1378
+
+        ll dp[55][55][1400]; memset(dp, -1, sizeof dp);
 
         const function<ll(int,int,int)> rec = [&](int i,int l,int sum) -> ll
         {
-            
+            if(l == 0 && sum == 0)
+            return 1;
+
+            if(l == 0 || sum <= 0 || i > 52)
+            return 0;
+
+            ll &ans = dp[i][l][sum];
+
+            if(ans != -1)
+            return ans;
+
+            ans = rec(i+1,l-1,sum-i) + rec(i+1,l,sum);
+
+            return ans;
         };
+
+        if(sum > total || l > 52)
+        {
+            printf("Case %d: %lld\n",t,0);
+
+            continue;
+        }
+
+        ll ans = rec(1,l,sum);
+
+        printf("Case %d: %lld\n",t,ans);
     }
 
     return 0;

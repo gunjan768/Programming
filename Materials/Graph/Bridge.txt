@@ -14,45 +14,50 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define f            first
 #define s            second
 #define all(v)       v.begin(),v.end()
-#define inf          (int)2e9+7
+#define inf          2e9+7
 const int mod = 1e9+7;
 const int N = 5e5+5;
 
-template <class F>
-struct y_combinator 
+int n, m, a[N], vis[N], low[N], dis[N], tim;
+ll sum, alice;
+vector<int>v1[N];
+ 
+ll dfs(int node, int par)
 {
-    F f;
-
-    template <class... Args>
-    decltype(auto) operator()(Args&&... args) const 
+    low[node] = dis[node] = ++tim, vis[node] = 1;
+    
+    ll add = a[node];
+    
+    for(auto it:v1[node])
+    if(it != par)
     {
-        return f(std::ref(*this), std::forward<Args>(args)...);
+        if(vis[it] == 0)
+        {            
+            ll val = dfs(it,node);
+
+            if(low[it] > dis[node])
+            {
+                // Bridge
+            }
+
+            low[node] = min(low[it], low[node]);
+
+            add += val;
+        }
+        else
+        low[node] = min(low[node], dis[it]);
     }
-};
 
-template <class F>
-y_combinator<std::decay_t<F>> make_y_combinator(F&& f) 
-{
-    return {std::forward<F>(f)};
+    return add;
 }
-
-int n;
 
 int main()
 {
     int test; scn(test);
 
-    for(int t = 1; t <= test; ++t)
+    for(int tt = 1; tt <= test; ++tt)
     {
-        auto dfs = make_y_combinator([&](auto &&dfs) -> void
-        {
-            
-        });
-
-        const function<ll(int,int,int)> rec = [&](int i,int l,int sum) -> ll
-        {
-            
-        };
+        
     }
 
     return 0;

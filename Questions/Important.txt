@@ -3,3 +3,4 @@ https://leetcode.com/problems/path-with-maximum-gold/   (Backtracking with maxim
 
 https://binarysearch.com/problems/Longest-Even-Sum-Path
 https://leetcode.com/problems/binary-tree-maximum-path-sum/
+https://leetcode.com/problems/reveal-cards-in-increasing-order/

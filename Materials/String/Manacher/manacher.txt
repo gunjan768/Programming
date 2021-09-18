@@ -33,32 +33,34 @@ int min(int a,int b)
 
 int manacher(string &s1)
 {
-    n = s1.size();
+    int n = (int)s1.size();
 
-    int r = 0, c = 0, maxLen = 0, palind[n+1] = {};
+    int r = 0, c = 0, mx = 0, pal[n+1];
+    
+    memset(pal,0,sizeof pal);
   
-    for(int i=0;i<n;i++)
+    for(int i=0;i<n;++i)
     {
-        int mirror = 2*c-i;
-
-        if(i<r)
-        palind[i] = min(r-i,palind[mirror]);
-
-        int st = i-(palind[i]+1), end = i+(palind[i]+1);
-
+        int left = 2*c-i, right = r-i;
+        
+        if(i < r)
+        pal[i] = min(pal[left], right);
+        
+        int st = i-(pal[i]+1), end = i+(pal[i]+1);
+        
         while(st >= 0 && end<n && s1[st] == s1[end])
-        st--, end++, palind[i]++;
-
-        if(i+palind[i]>r)
+        --st, ++end, ++pal[i];
+        
+        if(i+pal[i] > r)
         {
-            c = i, r = i+palind[i];
-
-            if(palind[i]>maxLen)
-            maxLen = palind[i], ind = i;
+            r = i+pal[i], c = i;
+            
+            if(pal[i]>mx)
+            mx = pal[i], ind = i;
         }
     }
 
-    return maxLen;
+    return mx;
 }
 
 int main()

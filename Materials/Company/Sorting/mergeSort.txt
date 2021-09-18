@@ -24,19 +24,19 @@ int t;
 
 int n,a[N];
 
-void merge(int low,int mid,int high)
+void merge(int st,int mid,int end)
 {
-    int sz1=mid-low+1,sz2=high-mid;
+    int sz1 = mid-st+1, sz2 = end-mid;
 
-    int temp1[sz1],temp2[sz2];
+    int temp1[sz1], temp2[sz2];
 
-    for(int i=0;i<sz1;i++)
-    temp1[i]=a[low+i];
+    for(int i = 0; i<sz1; i++)
+    temp1[i] = a[st+i];
 
-    for(int i=0;i<sz2;i++)
-    temp2[i]=a[mid+1+i];
+    for(int i = 0; i<sz2; i++)
+    temp2[i] = a[mid+1+i];
 
-    int i=0,j=0,k=low;
+    int i = 0, j = 0, k = st;
 
     while(i<sz1 && j<sz2)
     {
@@ -53,17 +53,16 @@ void merge(int low,int mid,int high)
     a[k++]=temp2[j++];
 }
 
-void mergeSort(int low,int high)
+void mergeSort(int st, int end)
 {
-    if(low>=high)
-    return;
+    if(st >= end) return;
     
-    int mid=(low+high)/2;
+    int mid = (st + end)/2;
 
-    mergeSort(low,mid);
-    mergeSort(mid+1,high);
+    mergeSort(st, mid);
+    mergeSort(mid+1, end);
 
-    merge(low,mid,high);
+    merge(st, mid, end);
 }
 
 int main()

@@ -21,10 +21,16 @@
 	( Permutation and Combination ) 
 
 4. https://leetcode.com/problems/number-of-music-playlists/  ( Must )
-5. https://binarysearch.com/room/Weekly-Contest-18-YwMuqjlz8f?questionsetIndex=1   ( K Stacks )
+https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/
 
 
+https://binarysearch.com/room/Weekly-Contest-18-YwMuqjlz8f?questionsetIndex=1   ( K Stacks )
 https://atcoder.jp/contests/abc185/tasks/abc185_c 	( Total number of possible lengths )
 https://leetcode.com/problems/jump-game/   ( Very basic )
 https://leetcode.com/problems/unique-paths-ii/submissions/  (Unique paths from 1,1 to n,m)
 https://binarysearch.com/problems/Job-Scheduling-to-Minimize-Difficulty
+https://binarysearch.com/problems/Multi-Knapsack  (Knapsack with limited items)
+https://binarysearch.com/problems/Decode-Messages-Sequel
+https://binarysearch.com/problems/Split-String-Into-K-Palindromes
+https://binarysearch.com/problems/Longest-Alternating-Subsequence
+https://binarysearch.com/problems/Update-List-to-Make-It-Strictly-Increasing  (Swap b/w two arrays wala hai)
