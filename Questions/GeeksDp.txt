@@ -22,6 +22,8 @@ Solution : https://massivealgorithms.blogspot.com/2019/12/leetcode-1259-handshak
 
 https://practice.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1#  (Unbounded knapsack)
 
+https://www.geeksforgeeks.org/minimum-cost-to-merge-all-elements-of-list/ (Must do)
+
 
 
 				Site for top 20 dp questions
