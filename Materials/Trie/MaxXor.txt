@@ -7,68 +7,67 @@ struct Trie
     
     Trie()
     {
-        ptr[0]=ptr[1]=nullptr;
+        ptr[0] = ptr[1] = nullptr;
     }
 };
 
-int xors=0;
+int xors;
 
-void insert(Trie *root,int val,int lev)
+void insert(Trie *root, int val, int lev)
 {
-    if(lev==-1)
-    return;
+    if(lev == -1) return;
     
-    bool bit = (1LL*val>>lev)&1;
+    bool bit = (1LL << lev) & val;
     
     if(root->ptr[bit] == nullptr)
     root->ptr[bit] = new Trie();
     
-    insert(root->ptr[bit],val,lev-1);
+    insert(root->ptr[bit], val, lev-1);
 }
 
-void query(Trie *root,int val,int lev)
+void query(Trie *root, int val, int lev)
 {
-    if(lev==-1)
-    return;
+    if(lev == -1) return;
     
-    bool bit = (1LL*val>>lev)&1;
+    bool bit = (1LL << lev) & val;
     
-    if(bit)
+    if(bit == 1)
     {
         if(root->ptr[0])
-        xors+=1<<lev,query(root->ptr[0],val,lev-1);
+        xors += (1LL << lev), query(root->ptr[0], val, lev-1);
         else
-        query(root->ptr[1],val,lev-1);
+        query(root->ptr[1], val, lev-1);
     }
     else
     {
         if(root->ptr[1])
-        xors+=1<<lev,query(root->ptr[1],val,lev-1);
+        xors += (1LL << lev), query(root->ptr[1], val, lev-1);
         else
-        query(root->ptr[0],val,lev-1);
+        query(root->ptr[0], val, lev-1);
     }
 }
 
 class Solution {
 public:
-    int findMaximumXOR(vector<int>& a) 
+    int findMaximumXOR(vector<int> &a) 
     {
         Trie *root = new Trie();
         
-        insert(root,a[0],31);
+        insert(root, a[0], 31);
         
-        int n=(int)a.size(),ans=0;
+        int n = a.size(), ans = 0;
+        xors = 0;
         
-        for(int i=1;i<n;i++)
+        for(int i = 1; i<n; i++)
         {
-            query(root,a[i],31);
+            query(root, a[i], 31);
             
-            ans=max(ans,xors); xors=0;
+            ans = max(ans, xors); 
+            xors = 0;
             
-            insert(root,a[i],31);
+            insert(root, a[i], 31);
         }
         
-    
         return ans;
     }
 };
