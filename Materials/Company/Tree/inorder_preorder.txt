@@ -1,30 +1,25 @@
-Node* build(int st,int end,int *in,int *pre,unordered_map<int,int> &mp,int &ind)
-{
-    if(st > end)
-    return nullptr;
+Node *dfs(int st, int end, int &i, int pre[], unordered_map<int, vector<int>> &mp)
+    {
+        if (st > end) return NULL;
+        
+        Node *curr = new Node(pre[i++]);
+        int mid = mp[curr->data].back();
+        mp[curr->data].pop_back();
+        
+        curr->left = dfs(st, mid - 1, i, pre, mp);
+        curr->right = dfs(mid + 1, end, i, pre, mp);
+        
+        return curr;
+    }
     
-    int data = pre[ind++];
-    
-    Node *curr = new Node(data);
-    
-    int mid = mp[data];
-    
-    curr->left = build(st,mid-1,in,pre,mp,ind);
-    curr->right = build(mid+1,end,in,pre,mp,ind);
-    
-    return curr;
-}
-
-Node* buildTree(int in[],int pre[], int n)
-{
-    unordered_map<int,int>mp;
-    
-    for(int i=0;i<n;i++)
-    mp[in[i]] = i;
-    
-    int ind = 0;
-    
-    Node *root=build(0,n-1,in,pre,mp,ind);
-    
-    return root;
-}
+    Node* buildTree(int in[],int pre[], int n)
+    {
+        unordered_map<int, vector<int>> mp;
+        
+        for (int i = 0; i < n; ++i) mp[in[i]].push_back(i);
+        for (auto &it: mp) reverse(it.second.begin(), it.second.end());
+        
+        int i = 0;
+        
+        return dfs(0, n - 1, i, pre, mp);
+    }
