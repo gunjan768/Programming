@@ -1,6 +1,8 @@
 // https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 // https://practice.geeksforgeeks.org/problems/nodes-at-given-distance-in-binary-tree/1#
 
+Nodes within distance K: https://www.geeksforgeeks.org/problems/sum-of-nodes-within-k-distance-from-target--170637/1
+
 void dfs1(Node *root, int tar, int k, vector<int> &ans)
 {
     if(!root) return;
