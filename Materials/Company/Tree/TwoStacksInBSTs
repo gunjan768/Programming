@@ -1,0 +1,56 @@
+https://leetcode.com/problems/two-sum-bsts/ - this is a premium question
+Given the roots of two binary search trees, root1 and root2, return true if and only if there is a node in the first tree and a node in the second tree whose values sum up to a given integer target.
+
+More questions like this:
+https://www.geeksforgeeks.org/problems/print-common-nodes-in-bst/1
+https://www.geeksforgeeks.org/problems/find-a-pair-with-given-target-in-bst/1
+
+class Solution {
+public:
+    void dfsLeft(TreeNode* root, stack<TreeNode*> &st)
+    {
+        if (!root) return;
+
+        st.emplace(root);
+
+        dfsLeft(root->left, st);
+    }
+
+    void dfsRight(TreeNode* root, stack<TreeNode*> &st)
+    {
+        if (!root) return;
+
+        st.emplace(root);
+
+        dfsRight(root->right, st);
+    }
+
+    bool twoSumBSTs(TreeNode* root1, TreeNode* root2, int target) 
+    {
+        stack<TreeNode*> st1, st2;
+
+        dfsLeft(root1, st1);
+        dfsRight(root2, st2);  
+
+        while (!st1.empty() && !st2.empty())
+        {
+            TreeNode *curr1 = st1.top();
+            TreeNode *curr2 = st2.top();
+            
+            if (curr1->val + curr2->val == target) return true;
+
+            if (curr1->val + curr2->val < target)
+            {
+                st1.pop();
+                dfsLeft(curr1->right, st1);
+            }
+            else
+            {
+                st2.pop();
+                dfsRight(curr2->left, st2);
+            }
+        }
+
+        return false;
+    }
+};
